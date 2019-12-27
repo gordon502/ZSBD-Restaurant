@@ -25,7 +25,7 @@
                   <Font size="46.0" />
                </font>
             </Button>
-            <Label fx:id="loggedUserLabel" alignment="CENTER" layoutY="35.0" prefHeight="40.0" prefWidth="1200.0" text="Logged User: Lorem" textAlignment="CENTER">
+            <Label fx:id="loggedUserLabel" alignment="CENTER" layoutY="35.0" prefHeight="40.0" prefWidth="1200.0" text="Logged User: Lorem" textAlignment="CENTER" textFill="RED">
                <font>
                   <Font size="32.0" />
                </font>

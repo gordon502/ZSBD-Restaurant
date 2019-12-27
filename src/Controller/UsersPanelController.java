@@ -28,7 +28,17 @@ public class UsersPanelController {
     }
 
     @FXML
+    public void showNewUserPanel() throws IOException{
+        Stage stage = (Stage) backButton.getScene().getWindow();
+
+        Parent newUserPanel = FXMLLoader.load(getClass().getResource("../View/NewUserPanelScene.fxml"));
+        stage.setScene(new Scene(newUserPanel, 1200, 800));
+    }
+
+    @FXML
     public void initialize(){
         loggedUserLabel.setText("Logged user: " + UserData.login);
     }
+
+
 }

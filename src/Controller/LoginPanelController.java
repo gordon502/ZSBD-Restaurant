@@ -52,6 +52,7 @@ public class LoginPanelController {
             function = result.get();
         }
 
+        //should be written with database information after successfully authorization
         UserData.login = login;
         UserData.function = function;
 
