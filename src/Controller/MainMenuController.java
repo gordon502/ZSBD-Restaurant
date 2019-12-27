@@ -23,14 +23,12 @@ public class MainMenuController {
     private Label loggedUserLabel;
 
     @FXML
-    public void showUsersPanel() throws IOException{
-        if (UserData.function.equals("manager")) {
-            Stage stage = (Stage) logOutButton.getScene().getWindow();
-            Parent mainMenu = FXMLLoader.load(getClass().getResource("../View/UsersPanelScene.fxml"));
-            stage.setScene(new Scene(mainMenu, 1200, 800));
-        }
-        else { showAccessDeniedAlert(); }
+    public void showActiveBillsPanel() {
 
+    }
+
+    @FXML
+    public void showNewBillPanel() {
 
     }
 
@@ -41,6 +39,35 @@ public class MainMenuController {
         stage.setScene(new Scene(schedulePanel, 1200, 800));
     }
 
+    @FXML
+    public void showStockRoomPanel() {
+
+    }
+
+    @FXML
+    public void showRaportsPanel() throws IOException{
+        if (UserData.function.equals("manager")) {
+            Stage stage = (Stage) logOutButton.getScene().getWindow();
+            Parent mainMenu = FXMLLoader.load(getClass().getResource("../View/RaportsPanelScene.fxml"));
+            stage.setScene(new Scene(mainMenu, 1200, 800));
+        }
+        else {
+            showAccessDeniedAlert();
+        }
+    }
+
+    @FXML
+    public void showUsersPanel() throws IOException{
+        if (UserData.function.equals("manager")) {
+            Stage stage = (Stage) logOutButton.getScene().getWindow();
+            Parent mainMenu = FXMLLoader.load(getClass().getResource("../View/UsersPanelScene.fxml"));
+            stage.setScene(new Scene(mainMenu, 1200, 800));
+        }
+        else {
+            showAccessDeniedAlert();
+        }
+
+    }
 
     @FXML
     public void logout() throws IOException {
@@ -51,14 +78,7 @@ public class MainMenuController {
         stage.setScene(new Scene(mainMenu, 1200, 800));
     }
 
-    @FXML
-    public void showRaports(){
-        if (UserData.function.equals("manager")) {
-        }
-        else {
-            showAccessDeniedAlert();
-        }
-    }
+
 
     @FXML
     public void initialize(){

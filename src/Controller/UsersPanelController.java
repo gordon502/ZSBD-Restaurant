@@ -24,7 +24,7 @@ public class UsersPanelController {
         Stage stage = (Stage) backButton.getScene().getWindow();
 
         Parent mainMenu = FXMLLoader.load(getClass().getResource("../View/MainMenuScene.fxml"));
-        stage.setScene(new Scene(mainMenu, 1200, 800));
+        stage.setScene(new Scene(mainMenu, stage.getWidth(), stage.getHeight()));
     }
 
     @FXML
@@ -32,7 +32,7 @@ public class UsersPanelController {
         Stage stage = (Stage) backButton.getScene().getWindow();
 
         Parent newUserPanel = FXMLLoader.load(getClass().getResource("../View/NewUserPanelScene.fxml"));
-        stage.setScene(new Scene(newUserPanel, 1200, 800));
+        stage.setScene(new Scene(newUserPanel, stage.getWidth(), stage.getHeight()));
     }
 
     @FXML
