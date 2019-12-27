@@ -39,6 +39,13 @@ public class MainMenuController {
 
     }
 
+    @FXML
+    public void showSchedulePanel() throws IOException {
+        Stage stage = (Stage) logOutButton.getScene().getWindow();
+        Parent schedulePanel = FXMLLoader.load(getClass().getResource("../View/SchedulePanelScene.fxml"));
+        stage.setScene(new Scene(schedulePanel, 1200, 800));
+    }
+
 
     @FXML
     public void logout() throws IOException {
