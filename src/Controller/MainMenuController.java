@@ -29,13 +29,8 @@ public class MainMenuController {
             Parent mainMenu = FXMLLoader.load(getClass().getResource("../View/UsersPanelScene.fxml"));
             stage.setScene(new Scene(mainMenu, 1200, 800));
         }
-        else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Access Denied!");
-            alert.setHeaderText(null);
-            alert.setContentText("You don't have permission for this operation!");
-            alert.showAndWait();
-        }
+        else { showAccessDeniedAlert(); }
+
 
     }
 
@@ -57,7 +52,24 @@ public class MainMenuController {
     }
 
     @FXML
+    public void showRaports(){
+        if (UserData.function.equals("manager")) {
+        }
+        else {
+            showAccessDeniedAlert();
+        }
+    }
+
+    @FXML
     public void initialize(){
         loggedUserLabel.setText("Logged user: " + UserData.login);
+    }
+
+    private void showAccessDeniedAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Access Denied!");
+        alert.setHeaderText(null);
+        alert.setContentText("You don't have permission for this operation!");
+        alert.showAndWait();
     }
 }
