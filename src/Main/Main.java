@@ -10,6 +10,16 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        /*
+         here should be initialized connection between application
+         and oracle database
+         */
+
+        /*
+        also we need to pass connection variable to controller or make it global
+         */
+
         Parent root = FXMLLoader.load(getClass().getResource("../View/LoginPanelScene.fxml"));
         primaryStage.setTitle("ZSBD Restaurant");
         primaryStage.setScene(new Scene(root, 1200, 800));
