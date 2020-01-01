@@ -45,7 +45,7 @@ public class UsersPanelController {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/NewUserPanelScene.fxml"));
         Parent newUserPanel = (Parent) loader.load();
-        MainMenuController controller = loader.<MainMenuController>getController();
+        NewUserPanelController controller = loader.<NewUserPanelController>getController();
         controller.setDBConnection(conn);
 
         Scene oldScene = stage.getScene();
