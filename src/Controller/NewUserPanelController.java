@@ -41,7 +41,8 @@ public class NewUserPanelController {
     public void showUsersDataPanel() throws IOException {
         Stage stage = (Stage) loggedUserLabel.getScene().getWindow();
         Parent mainMenu = FXMLLoader.load(getClass().getResource("../View/UsersPanelScene.fxml"));
-        stage.setScene(new Scene(mainMenu, 1200, 800));
+        Scene oldScene = stage.getScene();
+        stage.setScene(new Scene(mainMenu, oldScene.getWidth(), oldScene.getHeight()));
     }
 
     @FXML

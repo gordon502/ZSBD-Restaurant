@@ -5,12 +5,30 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import java.sql.*;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        Connection conn = null;
+        Properties connectionProps = new Properties();
+        connectionProps.put("user", "ot");
+        connectionProps.put("password", "Orcl1234");
+        try {
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/"+
+            "pdborcl", connectionProps);
+            System.out.println("Połączono z bazą danych");
+        } catch (SQLException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE,
+                    "nie udało się połączyć z bazą danych", ex);
+            System.exit(-1);
+        }
         /*
          here should be initialized connection between application
          and oracle database
@@ -22,8 +40,8 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("../View/LoginPanelScene.fxml"));
         primaryStage.setTitle("ZSBD Restaurant");
-        primaryStage.setScene(new Scene(root, 1200, 800));
-        primaryStage.setResizable(false);
+        primaryStage.setScene(new Scene(root, 900, 600));
+        primaryStage.setResizable(true);
         primaryStage.show();
     }
 

@@ -59,6 +59,7 @@ public class LoginPanelController {
         Stage stage = (Stage) loginButton.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainMenuScene.fxml"));
         Parent parent = (Parent) loader.load();
-        stage.setScene(new Scene(parent, 1200, 800));
+        Scene oldScene = stage.getScene();
+        stage.setScene(new Scene(parent, oldScene.getWidth(), oldScene.getHeight()));
     }
 }
