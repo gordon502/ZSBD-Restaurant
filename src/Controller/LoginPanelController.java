@@ -42,7 +42,6 @@ public class LoginPanelController {
 
 
         //placeholders for user informations
-        Connection conn = null;
         String login = loginTextField.getText();
         String password = passwordTextField.getText();
         String function = "";
@@ -66,11 +65,10 @@ public class LoginPanelController {
 
         Stage stage = (Stage) loginButton.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainMenuScene.fxml"));
-
+        Parent parent = (Parent) loader.load();
         MainMenuController controller = loader.<MainMenuController>getController();
         controller.setDBConnection(conn);
 
-        Parent parent = (Parent) loader.load();
         Scene oldScene = stage.getScene();
         stage.setScene(new Scene(parent, oldScene.getWidth(), oldScene.getHeight()));
     }

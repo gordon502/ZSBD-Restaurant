@@ -44,11 +44,10 @@ public class MainMenuController {
 
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/SchedulePanelScene.fxml"));
-
+        Parent schedulePanel = (Parent) loader.load();
         SchedulePanelController controller = loader.<SchedulePanelController>getController();
         controller.setDBConnection(conn);
 
-        Parent schedulePanel = (Parent) loader.load();
         Scene oldScene = stage.getScene();
         stage.setScene(new Scene(schedulePanel, oldScene.getWidth(), oldScene.getHeight()));
     }
@@ -64,11 +63,10 @@ public class MainMenuController {
             Stage stage = (Stage) logOutButton.getScene().getWindow();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/RaportsPanelScene.fxml"));
-
+            Parent raportsPanel = (Parent) loader.load();
             RaportsPanelController controller = loader.<RaportsPanelController>getController();
             controller.setDBConnection(conn);
 
-            Parent raportsPanel = (Parent) loader.load();
             Scene oldScene = stage.getScene();
             stage.setScene(new Scene(raportsPanel, oldScene.getWidth(), oldScene.getHeight()));
         }
@@ -83,11 +81,10 @@ public class MainMenuController {
             Stage stage = (Stage) logOutButton.getScene().getWindow();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/UsersPanelScene.fxml"));
-
+            Parent usersPanel = (Parent) loader.load();
             UsersPanelController controller = loader.<UsersPanelController>getController();
             controller.setDBConnection(conn);
 
-            Parent usersPanel = (Parent) loader.load();
             Scene oldScene = stage.getScene();
             stage.setScene(new Scene(usersPanel, oldScene.getWidth(), oldScene.getHeight()));
         }
@@ -104,11 +101,9 @@ public class MainMenuController {
         Stage stage = (Stage) logOutButton.getScene().getWindow();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/LoginPanelScene.fxml"));
-
+        Parent loginPanel = (Parent) loader.load();
         LoginPanelController controller = loader.<LoginPanelController>getController();
         controller.setDBConnection(conn);
-
-        Parent loginPanel = (Parent) loader.load();
 
         Scene oldScene = stage.getScene();
         stage.setScene(new Scene(loginPanel, oldScene.getWidth(), oldScene.getHeight()));

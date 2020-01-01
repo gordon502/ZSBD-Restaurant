@@ -49,11 +49,9 @@ public class NewUserPanelController {
         Stage stage = (Stage) loggedUserLabel.getScene().getWindow();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/UsersPanelScene.fxml"));
-
+        Parent usersPanel = (Parent) loader.load();
         UsersPanelController controller = loader.<UsersPanelController>getController();
         controller.setDBConnection(conn);
-
-        Parent usersPanel = (Parent) loader.load();
 
         Scene oldScene = stage.getScene();
         stage.setScene(new Scene(usersPanel, oldScene.getWidth(), oldScene.getHeight()));

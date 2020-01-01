@@ -31,11 +31,9 @@ public class SchedulePanelController {
         Stage stage = (Stage) backButton.getScene().getWindow();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainMenuScene.fxml"));
-
+        Parent mainMenu = (Parent) loader.load();
         MainMenuController controller = loader.<MainMenuController>getController();
         controller.setDBConnection(conn);
-
-        Parent mainMenu = (Parent) loader.load();
 
         Scene oldScene = stage.getScene();
         stage.setScene(new Scene(mainMenu, oldScene.getWidth(), oldScene.getHeight()));
