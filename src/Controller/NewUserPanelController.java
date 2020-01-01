@@ -11,10 +11,13 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NewUserPanelController {
+
+    Connection conn = null;
 
     @FXML
     private Label loggedUserLabel;
@@ -37,12 +40,23 @@ public class NewUserPanelController {
     @FXML
     private ComboBox<String> functionsComboBox;
 
+    public void setDBConnection(Connection conn){
+        this.conn=conn;
+    }
+
     @FXML
     public void showUsersDataPanel() throws IOException {
         Stage stage = (Stage) loggedUserLabel.getScene().getWindow();
-        Parent mainMenu = FXMLLoader.load(getClass().getResource("../View/UsersPanelScene.fxml"));
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/UsersPanelScene.fxml"));
+
+        UsersPanelController controller = loader.<UsersPanelController>getController();
+        controller.setDBConnection(conn);
+
+        Parent usersPanel = (Parent) loader.load();
+
         Scene oldScene = stage.getScene();
-        stage.setScene(new Scene(mainMenu, oldScene.getWidth(), oldScene.getHeight()));
+        stage.setScene(new Scene(usersPanel, oldScene.getWidth(), oldScene.getHeight()));
     }
 
     @FXML

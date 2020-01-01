@@ -1,5 +1,7 @@
 package Main;
 
+import Controller.LoginPanelController;
+import Controller.MainMenuController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,7 +40,11 @@ public class Main extends Application {
         also we need to pass connection variable to controller or make it global
          */
 
-        Parent root = FXMLLoader.load(getClass().getResource("../View/LoginPanelScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/LoginPanelScene.fxml"));
+        Parent root = (Parent) loader.load();
+        LoginPanelController controller = loader.<LoginPanelController>getController();
+        controller.setDBConnection(conn); //pass variables to MainMenuController
+
         primaryStage.setTitle("ZSBD Restaurant");
         primaryStage.setScene(new Scene(root, 900, 600));
         primaryStage.setResizable(true);
