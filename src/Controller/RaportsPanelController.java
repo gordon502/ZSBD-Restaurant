@@ -16,8 +16,6 @@ import java.time.LocalDate;
 
 public class RaportsPanelController {
 
-    Connection conn = null;
-
     @FXML
     private Label loggedUserLabel;
 
@@ -29,10 +27,6 @@ public class RaportsPanelController {
 
     @FXML
     private DatePicker endDatePicker;
-
-    public void setDBConnection(Connection conn) {
-        this.conn = conn;
-    }
 
     @FXML
     public void generateRaport() {
@@ -49,7 +43,6 @@ public class RaportsPanelController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainMenuScene.fxml"));
         Parent mainMenu = (Parent) loader.load();
         MainMenuController controller = loader.<MainMenuController>getController();
-        controller.setDBConnection(conn);
 
         Scene oldScene = stage.getScene();
         stage.setScene(new Scene(mainMenu, oldScene.getWidth(), oldScene.getHeight()));

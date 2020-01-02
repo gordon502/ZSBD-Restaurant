@@ -2,6 +2,7 @@ package Main;
 
 import Controller.LoginPanelController;
 import Controller.MainMenuController;
+import Model.ConnectionData;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,12 +19,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        Connection conn = null;
+        ConnectionData.conn = null;
         Properties connectionProps = new Properties();
         connectionProps.put("user", "ot");
         connectionProps.put("password", "Orcl1234");
         try {
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/"+
+            ConnectionData.conn = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/"+
             "pdborcl", connectionProps);
             System.out.println("Połączono z bazą danych");
         } catch (SQLException ex) {
@@ -31,19 +32,10 @@ public class Main extends Application {
                     "nie udało się połączyć z bazą danych", ex);
             System.exit(-1);
         }
-        /*
-         here should be initialized connection between application
-         and oracle database
-         */
-
-        /*
-        also we need to pass connection variable to controller or make it global
-         */
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/LoginPanelScene.fxml"));
         Parent root = (Parent) loader.load();
         LoginPanelController controller = loader.<LoginPanelController>getController();
-        controller.setDBConnection(conn); //pass variables to MainMenuController
 
         primaryStage.setTitle("ZSBD Restaurant");
         primaryStage.setScene(new Scene(root, 900, 600));

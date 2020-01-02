@@ -17,8 +17,6 @@ import Model.UserData;
 
 public class LoginPanelController {
 
-    Connection conn = null;
-
     @FXML
     private Button loginButton;
 
@@ -27,10 +25,6 @@ public class LoginPanelController {
 
     @FXML
     private PasswordField passwordTextField;
-
-    public void setDBConnection(Connection conn) {
-        this.conn = conn;
-    }
 
     @FXML
     public void login() throws IOException {
@@ -67,7 +61,6 @@ public class LoginPanelController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainMenuScene.fxml"));
         Parent parent = (Parent) loader.load();
         MainMenuController controller = loader.<MainMenuController>getController();
-        controller.setDBConnection(conn);
 
         Scene oldScene = stage.getScene();
         stage.setScene(new Scene(parent, oldScene.getWidth(), oldScene.getHeight()));

@@ -14,17 +14,11 @@ import java.sql.Connection;
 
 public class SchedulePanelController {
 
-    Connection conn = null;
-
     @FXML
     private Button backButton;
 
     @FXML
     private Label loggedUserLabel;
-
-    public void setDBConnection(Connection conn){
-        this.conn=conn;
-    }
 
     @FXML
     public void showMainMenu() throws IOException {
@@ -33,7 +27,6 @@ public class SchedulePanelController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainMenuScene.fxml"));
         Parent mainMenu = (Parent) loader.load();
         MainMenuController controller = loader.<MainMenuController>getController();
-        controller.setDBConnection(conn);
 
         Scene oldScene = stage.getScene();
         stage.setScene(new Scene(mainMenu, oldScene.getWidth(), oldScene.getHeight()));
