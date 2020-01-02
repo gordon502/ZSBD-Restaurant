@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class UsersPanelController {
     private ObservableList<User> users;
-    private Integer chosenUserId;
+    private Integer chosenUserId=null;
 
     @FXML
     private TableView<User> userTable;
@@ -158,7 +158,7 @@ public class UsersPanelController {
 
     @FXML
     void clear(ActionEvent event) {
-        chosenUserId = null;
+//        chosenUserId = null;
         loginTextField.clear();
         passwordField.clear();
         firstNameTextField.clear();
@@ -231,7 +231,9 @@ public class UsersPanelController {
         userTable.setItems(users);
 
         userTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            fillUserData(newValue);
+            if (newValue!=null){
+                fillUserData(newValue);
+            }
         });
 
     }
