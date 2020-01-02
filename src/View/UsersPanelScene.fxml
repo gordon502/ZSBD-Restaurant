@@ -88,7 +88,7 @@
                   <Pane prefHeight="33.0" prefWidth="290.0" />
                   <Button fx:id="registerButton" mnemonicParsing="false" onAction="#registerNewUser" prefWidth="70.0" text="Add" />
                   <Button fx:id="modifyButton" mnemonicParsing="false" onAction="#modifyUser" prefWidth="70.0" text="Modify" />
-                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteUser" prefWidth="70.0" text="Delete">
+                  <Button fx:id="fireButton" mnemonicParsing="false" onAction="#fireUser" prefWidth="70.0" text="Fire">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>

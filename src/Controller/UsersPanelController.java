@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 
 public class UsersPanelController {
@@ -53,6 +54,9 @@ public class UsersPanelController {
 
     @FXML
     private Button modifyButton;
+
+    @FXML
+    private Button fireButton;
 
     @FXML
     private Button backButton;
@@ -98,6 +102,13 @@ public class UsersPanelController {
         }
         catch (NumberFormatException e){}
 
+        CallableStatement stmt = conn.prepareCall("{call WstawZespol(?,?,?)}");
+        stmt.setInt(1, 60);
+        stmt.setString(2, "NOWY ZESPÓŁ");
+        stmt.setString(3, "PIOTROWO 3A");
+        stmt.execute();
+        stmt.close();
+
         /*
         INSERT TO DATABASE, also
         we must check if values are correct (atm i don't know if we have to do it in java
@@ -121,10 +132,15 @@ public class UsersPanelController {
     }
 
     @FXML
+    void fireUser(ActionEvent event) {
+
+    }
+
+    @FXML
     public void initialize(){
         loggedUserLabel.setText("Logged user: " + UserData.login);
-        functionComboBox.getItems().add("employee");
         functionComboBox.getItems().add("manager");
+        functionComboBox.getItems().add("employee");
 
         //force phoneTextField to get only numeric values
         phoneTextField.textProperty().addListener(new ChangeListener<String>() {
