@@ -32,7 +32,7 @@ public class UsersPanelController {
     private TableView<User> userTable;
 
     @FXML
-    private Label loggedUserLabel;
+    private Label userLabel;
 
     @FXML
     private TextField loginTextField;
@@ -167,11 +167,26 @@ public class UsersPanelController {
         rateTextField.clear();
         functionComboBox.getSelectionModel().select(null);
         postitionCombo.getSelectionModel().select(null);
+        userTable.getSelectionModel().select(null);
+        userLabel.setText("New user");
+    }
+
+    public void fillUserData(User user){
+        chosenUserId = user.getUserId();
+        loginTextField.setText(user.getLogin());
+        passwordField.setText(user.getPassword());
+        firstNameTextField.setText(user.getFirstName());
+        lastNameTextField.setText(user.getLastName());
+        phoneTextField.setText(String.valueOf(user.getPhone()));
+        rateTextField.setText(String.valueOf(user.getHourRate()));
+        functionComboBox.getSelectionModel().select(user.getFunction());
+        postitionCombo.getSelectionModel().select(user.getPosition());
+        userLabel.setText(String.valueOf(user.getUserId())+" - "+user.getFirstName()+" "+user.getLastName());
     }
 
     @FXML
     public void initialize() throws SQLException {
-        loggedUserLabel.setText("Logged user: " + UserData.login);
+        userLabel.setText("New user");
         functionComboBox.getItems().add("manager");
         functionComboBox.getItems().add("employee");
 
@@ -214,6 +229,10 @@ public class UsersPanelController {
         userTable.getColumns().get(5).setCellValueFactory(new PropertyValueFactory("hourRate"));
         userTable.getColumns().get(6).setCellValueFactory(new PropertyValueFactory("phone"));
         userTable.setItems(users);
+
+        userTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            fillUserData(newValue);
+        });
 
     }
 }

@@ -45,7 +45,7 @@
             </TableView>
             <VBox alignment="CENTER" maxWidth="300.0" prefHeight="600.0" prefWidth="200.0" spacing="5.0">
                <children>
-                  <Label fx:id="loggedUserLabel" text="Logged user:" />
+                  <Label fx:id="userLabel" />
                   <GridPane fx:id="dataGrid" alignment="TOP_CENTER" hgap="10.0" nodeOrientation="LEFT_TO_RIGHT" vgap="10.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="203.3333282470703" minWidth="10.0" prefWidth="158.0" />
