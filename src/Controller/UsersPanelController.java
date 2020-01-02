@@ -3,6 +3,7 @@ package Controller;
 import Model.ConnectionData;
 import Model.User;
 import Model.UserData;
+import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -10,10 +11,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 
 public class UsersPanelController {
     private ObservableList<User> users;
+    private Integer chosenUserId;
 
     @FXML
     private TableView<User> userTable;
@@ -34,7 +38,7 @@ public class UsersPanelController {
     private TextField loginTextField;
 
     @FXML
-    private TextField passwordTextField;
+    private TextField passwordField;
 
     @FXML
     private TextField lastNameTextField;
@@ -67,10 +71,13 @@ public class UsersPanelController {
     private Button backButton;
 
     @FXML
+    private GridPane dataGrid;
+
+    @FXML
     void modifyUser(ActionEvent event) {
         int phone;
         String login = loginTextField.getText();
-        String password = passwordTextField.getText();
+        String password = passwordField.getText();
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
         String function = functionComboBox.getValue();
@@ -93,11 +100,12 @@ public class UsersPanelController {
     void registerNewUser(ActionEvent event) throws SQLException {
         int phone = 0;
         String login = loginTextField.getText();
-        String password = passwordTextField.getText();
+        String password = passwordField.getText();
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
         String function = functionComboBox.getValue();
-        String position = "not defined";
+        String position = postitionCombo.getValue();
+
         Float hourRate = Float.valueOf(rateTextField.getText());
 
         try {
@@ -149,10 +157,28 @@ public class UsersPanelController {
     }
 
     @FXML
+    void clear(ActionEvent event) {
+        chosenUserId = null;
+        loginTextField.clear();
+        passwordField.clear();
+        firstNameTextField.clear();
+        lastNameTextField.clear();
+        phoneTextField.clear();
+        rateTextField.clear();
+        functionComboBox.getSelectionModel().select(null);
+        postitionCombo.getSelectionModel().select(null);
+    }
+
+    @FXML
     public void initialize() throws SQLException {
         loggedUserLabel.setText("Logged user: " + UserData.login);
         functionComboBox.getItems().add("manager");
         functionComboBox.getItems().add("employee");
+
+        postitionCombo.getItems().add("manager");
+        postitionCombo.getItems().add("cook");
+        postitionCombo.getItems().add("cleaner");
+        postitionCombo.getItems().add("waiter");
 
         //force phoneTextField to get only numeric values
         phoneTextField.textProperty().addListener(new ChangeListener<String>() {
@@ -178,7 +204,7 @@ public class UsersPanelController {
         rs.close();
         stmt.close();
 
-        users=FXCollections.observableArrayList(temp);
+        users = FXCollections.observableArrayList(temp);
 
         userTable.getColumns().get(0).setCellValueFactory(new PropertyValueFactory("userId"));
         userTable.getColumns().get(1).setCellValueFactory(new PropertyValueFactory("login"));
