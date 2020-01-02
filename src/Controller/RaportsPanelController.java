@@ -11,9 +11,12 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.time.LocalDate;
 
 public class RaportsPanelController {
+
+    Connection conn = null;
 
     @FXML
     private Label loggedUserLabel;
@@ -27,6 +30,9 @@ public class RaportsPanelController {
     @FXML
     private DatePicker endDatePicker;
 
+    public void setDBConnection(Connection conn) {
+        this.conn = conn;
+    }
 
     @FXML
     public void generateRaport() {
@@ -39,8 +45,14 @@ public class RaportsPanelController {
     @FXML
     public void showMainMenu() throws IOException {
         Stage stage = (Stage) backButton.getScene().getWindow();
-        Parent mainMenu = FXMLLoader.load(getClass().getResource("../View/MainMenuScene.fxml"));
-        stage.setScene(new Scene(mainMenu, 1200, 800));
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainMenuScene.fxml"));
+        Parent mainMenu = (Parent) loader.load();
+        MainMenuController controller = loader.<MainMenuController>getController();
+        controller.setDBConnection(conn);
+
+        Scene oldScene = stage.getScene();
+        stage.setScene(new Scene(mainMenu, oldScene.getWidth(), oldScene.getHeight()));
     }
 
     @FXML

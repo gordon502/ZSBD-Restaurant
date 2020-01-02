@@ -10,17 +10,23 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
 
 import Model.UserData;
 
 public class MainMenuController {
 
+    Connection conn = null;
 
     @FXML
     private Button logOutButton;
 
     @FXML
     private Label loggedUserLabel;
+
+    public void setDBConnection(Connection conn){
+        this.conn=conn;
+    }
 
     @FXML
     public void showActiveBillsPanel() {
@@ -35,8 +41,15 @@ public class MainMenuController {
     @FXML
     public void showSchedulePanel() throws IOException {
         Stage stage = (Stage) logOutButton.getScene().getWindow();
-        Parent schedulePanel = FXMLLoader.load(getClass().getResource("../View/SchedulePanelScene.fxml"));
-        stage.setScene(new Scene(schedulePanel, 1200, 800));
+
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/SchedulePanelScene.fxml"));
+        Parent schedulePanel = (Parent) loader.load();
+        SchedulePanelController controller = loader.<SchedulePanelController>getController();
+        controller.setDBConnection(conn);
+
+        Scene oldScene = stage.getScene();
+        stage.setScene(new Scene(schedulePanel, oldScene.getWidth(), oldScene.getHeight()));
     }
 
     @FXML
@@ -48,8 +61,14 @@ public class MainMenuController {
     public void showRaportsPanel() throws IOException{
         if (UserData.function.equals("manager")) {
             Stage stage = (Stage) logOutButton.getScene().getWindow();
-            Parent mainMenu = FXMLLoader.load(getClass().getResource("../View/RaportsPanelScene.fxml"));
-            stage.setScene(new Scene(mainMenu, 1200, 800));
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/RaportsPanelScene.fxml"));
+            Parent raportsPanel = (Parent) loader.load();
+            RaportsPanelController controller = loader.<RaportsPanelController>getController();
+            controller.setDBConnection(conn);
+
+            Scene oldScene = stage.getScene();
+            stage.setScene(new Scene(raportsPanel, oldScene.getWidth(), oldScene.getHeight()));
         }
         else {
             showAccessDeniedAlert();
@@ -60,8 +79,14 @@ public class MainMenuController {
     public void showUsersPanel() throws IOException{
         if (UserData.function.equals("manager")) {
             Stage stage = (Stage) logOutButton.getScene().getWindow();
-            Parent mainMenu = FXMLLoader.load(getClass().getResource("../View/UsersPanelScene.fxml"));
-            stage.setScene(new Scene(mainMenu, 1200, 800));
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/UsersPanelScene.fxml"));
+            Parent usersPanel = (Parent) loader.load();
+            UsersPanelController controller = loader.<UsersPanelController>getController();
+            controller.setDBConnection(conn);
+
+            Scene oldScene = stage.getScene();
+            stage.setScene(new Scene(usersPanel, oldScene.getWidth(), oldScene.getHeight()));
         }
         else {
             showAccessDeniedAlert();
@@ -74,8 +99,14 @@ public class MainMenuController {
         UserData.login = null;
         UserData.function = null;
         Stage stage = (Stage) logOutButton.getScene().getWindow();
-        Parent mainMenu = FXMLLoader.load(getClass().getResource("../View/LoginPanelScene.fxml"));
-        stage.setScene(new Scene(mainMenu, 1200, 800));
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/LoginPanelScene.fxml"));
+        Parent loginPanel = (Parent) loader.load();
+        LoginPanelController controller = loader.<LoginPanelController>getController();
+        controller.setDBConnection(conn);
+
+        Scene oldScene = stage.getScene();
+        stage.setScene(new Scene(loginPanel, oldScene.getWidth(), oldScene.getHeight()));
     }
 
 

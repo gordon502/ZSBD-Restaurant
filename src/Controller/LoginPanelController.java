@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,8 @@ import java.util.Optional;
 import Model.UserData;
 
 public class LoginPanelController {
+
+    Connection conn = null;
 
     @FXML
     private Button loginButton;
@@ -24,6 +27,10 @@ public class LoginPanelController {
 
     @FXML
     private PasswordField passwordTextField;
+
+    public void setDBConnection(Connection conn) {
+        this.conn = conn;
+    }
 
     @FXML
     public void login() throws IOException {
@@ -48,7 +55,7 @@ public class LoginPanelController {
         dialog.setHeaderText(null);
         dialog.setContentText("Choose your function:");
         Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()){
+        if (result.isPresent()) {
             function = result.get();
         }
 
@@ -59,6 +66,10 @@ public class LoginPanelController {
         Stage stage = (Stage) loginButton.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainMenuScene.fxml"));
         Parent parent = (Parent) loader.load();
-        stage.setScene(new Scene(parent, 1200, 800));
+        MainMenuController controller = loader.<MainMenuController>getController();
+        controller.setDBConnection(conn);
+
+        Scene oldScene = stage.getScene();
+        stage.setScene(new Scene(parent, oldScene.getWidth(), oldScene.getHeight()));
     }
 }
