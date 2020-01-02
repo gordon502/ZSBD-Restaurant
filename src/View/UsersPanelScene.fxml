@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
 <Pane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UsersPanelController">
    <children>
       <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0">
@@ -86,10 +85,18 @@
                         <Insets />
                      </opaqueInsets>
                   </GridPane>
-                  <Pane prefHeight="50.0" prefWidth="292.0" />
-                  <Button fx:id="registerButton" mnemonicParsing="false" onAction="#registerNewUser" text="Add" />
-                  <Button fx:id="modifyButton" mnemonicParsing="false" onAction="#modifyUser" text="Modify" />
-                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#showMainMenu" text="Back" />
+                  <Pane prefHeight="33.0" prefWidth="290.0" />
+                  <Button fx:id="registerButton" mnemonicParsing="false" onAction="#registerNewUser" prefWidth="70.0" text="Add" />
+                  <Button fx:id="modifyButton" mnemonicParsing="false" onAction="#modifyUser" prefWidth="70.0" text="Modify" />
+                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteUser" prefWidth="70.0" text="Delete">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#showMainMenu" prefWidth="70.0" text="Back">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin></Button>
                </children>
             </VBox>
          </children>
