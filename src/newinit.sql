@@ -152,17 +152,17 @@ BEGIN
 END ADD_SUPPLIER;
 /
 CREATE OR REPLACE PROCEDURE ADD_USER  
- (	Log NVARCHAR2,
+ (	Login NVARCHAR2,
 	Pass NVARCHAR2,
 	Func NVARCHAR2,
 	FName IN NVARCHAR2,
 	Sname IN NVARCHAR2,
-	Phone IN INT,
 	Pos IN NVARCHAR2,
-	HourRate IN FLOAT
+	HourRate IN FLOAT,
+	Phone IN INT
  ) IS
 BEGIN
-	INSERT INTO Users VALUES (NULL, Log, Pass, Func, FName, Sname, Phone, Pos, HourRate);
+	INSERT INTO Users VALUES (NULL, Login, Pass, Func, FName, Sname, Pos, HourRate, Phone, 0);
 END ADD_USER;
 /
 COMMIT;

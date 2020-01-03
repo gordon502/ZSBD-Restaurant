@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class UsersPanelController {
     private ObservableList<User> users;
-    private Integer chosenUserId=null;
+    private Integer chosenUserId = null;
 
     @FXML
     private TableView<User> userTable;
@@ -119,16 +119,21 @@ public class UsersPanelController {
         stmt.setString(3, function);
         stmt.setString(4, firstName);
         stmt.setString(5, lastName);
+        stmt.setString(6, position);
+        stmt.setFloat(7, hourRate);
+
         if (phone != 0) {
-            stmt.setInt(6, phone);
+            stmt.setInt(8, phone);
         } else {
-            stmt.setNull(6, Types.INTEGER);
+            stmt.setNull(8, Types.INTEGER);
         }
 
-        stmt.setString(7, position);
-        stmt.setFloat(8, hourRate);
         stmt.execute();
+        System.out.println(stmt.getUpdateCount());
         stmt.close();
+
+        readUsers();
+        fillTable();
 
         /*
         INSERT TO DATABASE, also
@@ -171,7 +176,7 @@ public class UsersPanelController {
         userLabel.setText("New user");
     }
 
-    public void fillUserData(User user){
+    public void fillUserData(User user) {
         chosenUserId = user.getUserId();
         loginTextField.setText(user.getLogin());
         passwordField.setText(user.getPassword());
@@ -181,11 +186,30 @@ public class UsersPanelController {
         rateTextField.setText(String.valueOf(user.getHourRate()));
         functionComboBox.getSelectionModel().select(user.getFunction());
         postitionCombo.getSelectionModel().select(user.getPosition());
-        userLabel.setText(String.valueOf(user.getUserId())+" - "+user.getFirstName()+" "+user.getLastName());
+        userLabel.setText(String.valueOf(user.getUserId()) + " - " + user.getFirstName() + " " + user.getLastName());
+    }
+
+    public void readUsers() throws SQLException {
+        ArrayList temp = new ArrayList();
+        Statement stmt = ConnectionData.conn.createStatement();
+        ResultSet rs = stmt.executeQuery(
+                "SELECT * FROM users");
+        while (rs.next()) {
+            temp.add(new User(rs.getInt("UserId"), rs.getString("Login"),
+                    rs.getString("Password"), rs.getString("Function")
+                    , rs.getString("FirstName"), rs.getString("LastName"), rs.getString("Position"), rs.getFloat("HourlyRate"), rs.getInt("PhoneNumber")));
+        }
+        rs.close();
+        stmt.close();
+        users = FXCollections.observableArrayList(temp);
+    }
+
+    public void fillTable() {
+        userTable.setItems(users);
     }
 
     @FXML
-    public void initialize() throws SQLException {
+    public void initialize() {
         userLabel.setText("New user");
         functionComboBox.getItems().add("manager");
         functionComboBox.getItems().add("employee");
@@ -207,19 +231,7 @@ public class UsersPanelController {
         });
 
         //read users from db
-        ArrayList temp = new ArrayList();
-        Statement stmt = ConnectionData.conn.createStatement();
-        ResultSet rs = stmt.executeQuery(
-                "SELECT * FROM users");
-        while (rs.next()) {
-            temp.add(new User(rs.getInt("UserId"), rs.getString("Login"),
-                    rs.getString("Password"), rs.getString("Function")
-                    , rs.getString("FirstName"), rs.getString("LastName"), rs.getString("Position"), rs.getFloat("HourlyRate"), rs.getInt("PhoneNumber")));
-        }
-        rs.close();
-        stmt.close();
 
-        users = FXCollections.observableArrayList(temp);
 
         userTable.getColumns().get(0).setCellValueFactory(new PropertyValueFactory("userId"));
         userTable.getColumns().get(1).setCellValueFactory(new PropertyValueFactory("login"));
@@ -231,7 +243,7 @@ public class UsersPanelController {
         userTable.setItems(users);
 
         userTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue!=null){
+            if (newValue != null) {
                 fillUserData(newValue);
             }
         });
