@@ -244,10 +244,6 @@ public class UsersPanelController {
         users = FXCollections.observableArrayList(temp);
     }
 
-    public void fillTable() {
-        userTable.setItems(users);
-    }
-
     @FXML
     public void initialize() throws SQLException {
         modifyButton.setDisable(true);
@@ -293,8 +289,7 @@ public class UsersPanelController {
         userTable.getColumns().get(6).setCellValueFactory(new PropertyValueFactory("phone"));
 
         readUsers();
-        fillTable();
-//        userTable.setItems(users);
+        userTable.setItems(users);
 
         userTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
