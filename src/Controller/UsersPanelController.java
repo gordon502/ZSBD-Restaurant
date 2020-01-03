@@ -75,7 +75,7 @@ public class UsersPanelController {
 
     @FXML
     void modifyUser(ActionEvent event) throws SQLException {
-        if(chosenUserId!=null){
+        if (chosenUserId != null) {
             int phone = 0;
             String login = loginTextField.getText();
             String password = passwordField.getText();
@@ -101,7 +101,7 @@ public class UsersPanelController {
                     ",hourlyrate=?" +
                     ",phonenumber=?" +
                     " where userid=?"
-                    );
+            );
             stmt.setString(1, login);
             stmt.setString(2, password);
             stmt.setString(3, function);
@@ -119,18 +119,16 @@ public class UsersPanelController {
 
             stmt.execute();
             stmt.close();
+            User modifiedUser = userTable.getSelectionModel().getSelectedItem();
+            modifiedUser.setLogin(login);
+            modifiedUser.setPassword(password);
+            modifiedUser.setFirstName(firstName);
+            modifiedUser.setLastName(lastName);
+            modifiedUser.setFunction(function);
+            modifiedUser.setPosition(position);
+            modifiedUser.setHourRate(hourRate);
+            modifiedUser.setPhone(phone);
         }
-
-        readUsers();
-        fillTable();
-
-        /*
-        UPDATE IN DATABASE, also
-        we must check if values are correct (atm i don't know if we have to do it in java
-        or database will send proper information when we will try INSERT wrong values)
-         */
-
-
     }
 
     @FXML
@@ -150,7 +148,7 @@ public class UsersPanelController {
         } catch (NumberFormatException e) {
         }
 
-        CallableStatement stmt = ConnectionData.conn.prepareCall("{call ADD_USER(?,?,?,?,?,?,?,?)}");
+        CallableStatement stmt = ConnectionData.conn.prepareCall("{call ADD_USER(?,?,?,?,?,?,?,?, ?)}");
         stmt.setString(1, login);
         stmt.setString(2, password);
         stmt.setString(3, function);
@@ -158,18 +156,19 @@ public class UsersPanelController {
         stmt.setString(5, lastName);
         stmt.setString(6, position);
         stmt.setFloat(7, hourRate);
-
         if (phone != 0) {
             stmt.setInt(8, phone);
         } else {
             stmt.setNull(8, Types.INTEGER);
         }
+        stmt.registerOutParameter(9, Types.INTEGER);
 
         stmt.execute();
+        int userid = stmt.getInt(9);
+        users.add(new User(userid, login, password, function, firstName, lastName, position, hourRate, phone, 0));
+
         stmt.close();
 
-        readUsers();
-        fillTable();
 
     }
 
@@ -187,13 +186,15 @@ public class UsersPanelController {
 
     @FXML
     void fireUser(ActionEvent event) throws SQLException {
-        if (chosenUserId!=null){
+        if (chosenUserId != null) {
             PreparedStatement stmt = ConnectionData.conn.prepareStatement(
                     "update users set fired=1 where userid=?");
             stmt.setInt(1, chosenUserId);
-            int changes=stmt.executeUpdate();
-            System.out.println("Zmodyfikowano "+changes+" krotek.");
+            int changes = stmt.executeUpdate();
+            System.out.println("Zmodyfikowano " + changes + " krotek.");
             stmt.close();
+            User firedUser = userTable.getSelectionModel().getSelectedItem();
+            firedUser.setFired(1);
         }
     }
 
@@ -210,7 +211,7 @@ public class UsersPanelController {
         postitionCombo.getSelectionModel().select(null);
         userTable.getSelectionModel().select(null);
         userLabel.setText("New user");
-        registerButton.setDisable(false);
+//        registerButton.setDisable(false);
         modifyButton.setDisable(true);
         fireButton.setDisable(true);
     }
@@ -236,7 +237,7 @@ public class UsersPanelController {
         while (rs.next()) {
             temp.add(new User(rs.getInt("UserId"), rs.getString("Login"),
                     rs.getString("Password"), rs.getString("Function")
-                    , rs.getString("FirstName"), rs.getString("LastName"), rs.getString("JobPosition"), rs.getFloat("HourlyRate"), rs.getInt("PhoneNumber")));
+                    , rs.getString("FirstName"), rs.getString("LastName"), rs.getString("JobPosition"), rs.getFloat("HourlyRate"), rs.getInt("PhoneNumber"), rs.getInt("Fired")));
         }
         rs.close();
         stmt.close();
@@ -298,11 +299,10 @@ public class UsersPanelController {
         userTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 fillUserData(newValue);
-                registerButton.setDisable(true);
+//                registerButton.setDisable(true);
                 modifyButton.setDisable(false);
                 fireButton.setDisable(false);
             }
         });
-
     }
 }

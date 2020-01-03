@@ -14,8 +14,21 @@ public class User {
     private SimpleStringProperty position;
     private SimpleFloatProperty hourRate;
     private SimpleIntegerProperty phone;
+    private SimpleIntegerProperty fired;
 
-    public User(Integer userId, String login, String password, String function, String fName, String lName, String position, Float hourRate, Integer phone) {
+    public int getFired() {
+        return fired.get();
+    }
+
+    public SimpleIntegerProperty firedProperty() {
+        return fired;
+    }
+
+    public void setFired(int fired) {
+        this.fired.set(fired);
+    }
+
+    public User(Integer userId, String login, String password, String function, String fName, String lName, String position, Float hourRate, Integer phone, Integer fired) {
         this.userId = new SimpleIntegerProperty(userId);
         this.login = new SimpleStringProperty(login);
         this.password = new SimpleStringProperty(password);
@@ -25,6 +38,7 @@ public class User {
         this.position = new SimpleStringProperty(position);
         this.hourRate = new SimpleFloatProperty(hourRate);
         this.phone = new SimpleIntegerProperty(phone);
+        this.fired= new SimpleIntegerProperty(fired);
     }
 
     public int getUserId() {

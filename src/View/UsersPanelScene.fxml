@@ -63,21 +63,21 @@
                     </rowConstraints>
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Login" GridPane.halignment="CENTER" />
-                        <TextField fx:id="loginTextField" GridPane.columnIndex="1" />
-                        <TextField fx:id="lastNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Function" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                        <ComboBox fx:id="functionComboBox" prefHeight="25.0" prefWidth="281.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                        <TextField fx:id="firstNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                        <TextField fx:id="phoneTextField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Position" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-                        <ComboBox fx:id="postitionCombo" prefHeight="25.0" prefWidth="281.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rate" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
-                        <TextField fx:id="rateTextField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Position" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rate" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                        <TextField fx:id="loginTextField" GridPane.columnIndex="1" />
                         <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="functionComboBox" prefHeight="25.0" prefWidth="281.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="firstNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="lastNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <ComboBox fx:id="postitionCombo" prefHeight="25.0" prefWidth="281.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <TextField fx:id="rateTextField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <TextField fx:id="phoneTextField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                      </children>
                      <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="30.0" top="10.0" />
