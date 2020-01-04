@@ -3,6 +3,7 @@ package Main;
 import Controller.LoginPanelController;
 import Controller.MainMenuController;
 import Model.ConnectionData;
+import Model.UserList;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,6 +33,8 @@ public class Main extends Application {
                     "nie udało się połączyć z bazą danych", ex);
             System.exit(-1);
         }
+
+        UserList.readUsers();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/LoginPanelScene.fxml"));
         Parent root = (Parent) loader.load();

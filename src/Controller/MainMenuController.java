@@ -10,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Connection;
 
 import Model.UserData;
 
@@ -39,7 +38,6 @@ public class MainMenuController {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/SchedulePanelScene.fxml"));
         Parent schedulePanel = (Parent) loader.load();
-        SchedulePanelController controller = loader.<SchedulePanelController>getController();
 
         Scene oldScene = stage.getScene();
         stage.setScene(new Scene(schedulePanel, oldScene.getWidth(), oldScene.getHeight()));

@@ -3,6 +3,7 @@ package Controller;
 import Model.ConnectionData;
 import Model.User;
 import Model.UserData;
+import Model.UserList;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -25,7 +26,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class UsersPanelController {
-    private ObservableList<User> users;
+//    private ObservableList<User> users;
     private Integer chosenUserId = null;
 
     @FXML
@@ -165,7 +166,7 @@ public class UsersPanelController {
 
         stmt.execute();
         int userid = stmt.getInt(9);
-        users.add(new User(userid, login, password, function, firstName, lastName, position, hourRate, phone, 0));
+        UserList.users.add(new User(userid, login, password, function, firstName, lastName, position, hourRate, phone, 0));
 
         stmt.close();
 
@@ -194,7 +195,7 @@ public class UsersPanelController {
             System.out.println("Zmodyfikowano " + changes + " krotek.");
             stmt.close();
             User firedUser = userTable.getSelectionModel().getSelectedItem();
-            users.remove(firedUser);
+            UserList.users.remove(firedUser);
             firedUser.setFired(1);
         }
     }
@@ -230,23 +231,23 @@ public class UsersPanelController {
         userLabel.setText(String.valueOf(user.getUserId()) + " - " + user.getFirstName() + " " + user.getLastName());
     }
 
-    public void readUsers() throws SQLException {
-        ArrayList temp = new ArrayList();
-        Statement stmt = ConnectionData.conn.createStatement();
-        ResultSet rs = stmt.executeQuery(
-                "SELECT * FROM users where fired=0");
-        while (rs.next()) {
-            temp.add(new User(rs.getInt("UserId"), rs.getString("Login"),
-                    rs.getString("Password"), rs.getString("Function")
-                    , rs.getString("FirstName"), rs.getString("LastName"), rs.getString("JobPosition"), rs.getFloat("HourlyRate"), rs.getInt("PhoneNumber"), rs.getInt("Fired")));
-        }
-        rs.close();
-        stmt.close();
-        users = FXCollections.observableArrayList(temp);
-    }
+//    public void readUsers() throws SQLException {
+//        ArrayList temp = new ArrayList();
+//        Statement stmt = ConnectionData.conn.createStatement();
+//        ResultSet rs = stmt.executeQuery(
+//                "SELECT * FROM users where fired=0");
+//        while (rs.next()) {
+//            temp.add(new User(rs.getInt("UserId"), rs.getString("Login"),
+//                    rs.getString("Password"), rs.getString("Function")
+//                    , rs.getString("FirstName"), rs.getString("LastName"), rs.getString("JobPosition"), rs.getFloat("HourlyRate"), rs.getInt("PhoneNumber"), rs.getInt("Fired")));
+//        }
+//        rs.close();
+//        stmt.close();
+//        UserList.users = FXCollections.observableArrayList(temp);
+//    }
 
     @FXML
-    public void initialize() throws SQLException {
+    public void initialize() {
         modifyButton.setDisable(true);
         fireButton.setDisable(true);
 
@@ -289,8 +290,8 @@ public class UsersPanelController {
         userTable.getColumns().get(5).setCellValueFactory(new PropertyValueFactory("hourRate"));
         userTable.getColumns().get(6).setCellValueFactory(new PropertyValueFactory("phone"));
 
-        readUsers();
-        userTable.setItems(users);
+//        readUsers();
+        userTable.setItems(UserList.users);
 
         userTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
