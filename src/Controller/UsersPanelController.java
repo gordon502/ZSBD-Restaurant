@@ -194,6 +194,7 @@ public class UsersPanelController {
             System.out.println("Zmodyfikowano " + changes + " krotek.");
             stmt.close();
             User firedUser = userTable.getSelectionModel().getSelectedItem();
+            users.remove(firedUser);
             firedUser.setFired(1);
         }
     }
@@ -233,7 +234,7 @@ public class UsersPanelController {
         ArrayList temp = new ArrayList();
         Statement stmt = ConnectionData.conn.createStatement();
         ResultSet rs = stmt.executeQuery(
-                "SELECT * FROM users");
+                "SELECT * FROM users where fired=0");
         while (rs.next()) {
             temp.add(new User(rs.getInt("UserId"), rs.getString("Login"),
                     rs.getString("Password"), rs.getString("Function")
