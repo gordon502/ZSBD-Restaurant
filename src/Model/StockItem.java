@@ -45,15 +45,15 @@ public class StockItem {
     }
 
     public void setName(String name) {
-        this.name = new SimpleStringProperty(name);
+        this.name.set(name);
     }
 
     public void setDemand(int demand) {
-        this.demand = new SimpleIntegerProperty(demand);
+        this.demand.set(demand);
     }
 
     public void setQuantity(int quantity) {
-        this.quantity = new SimpleIntegerProperty(quantity);
+        this.quantity.set(quantity);
     }
 
     public SimpleIntegerProperty getStockIdProperty() {
