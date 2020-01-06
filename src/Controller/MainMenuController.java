@@ -44,8 +44,19 @@ public class MainMenuController {
     }
 
     @FXML
-    public void showStockRoomPanel() {
+    public void showStockRoomPanel() throws IOException {
+        if (UserData.function.equals("manager")) {
+            Stage stage = (Stage) logOutButton.getScene().getWindow();
 
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/StockRoomPanelScene.fxml"));
+            Parent stockRoomPanel = (Parent) loader.load();
+
+            Scene oldScene = stage.getScene();
+            stage.setScene(new Scene(stockRoomPanel, oldScene.getWidth(), oldScene.getHeight()));
+        }
+        else {
+            showAccessDeniedAlert();
+        }
     }
 
     @FXML

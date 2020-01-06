@@ -3,6 +3,8 @@ package Main;
 import Controller.LoginPanelController;
 import Controller.MainMenuController;
 import Model.ConnectionData;
+import Model.StockItem;
+import Model.StockItemList;
 import Model.UserList;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +37,7 @@ public class Main extends Application {
         }
 
         UserList.readUsers();
+        StockItemList.readItems();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/LoginPanelScene.fxml"));
         Parent root = (Parent) loader.load();

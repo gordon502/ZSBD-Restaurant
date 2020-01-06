@@ -6,13 +6,15 @@ import javafx.beans.property.SimpleStringProperty;
 public class StockItem {
     private SimpleIntegerProperty stockId;
     private SimpleIntegerProperty userId;
+    private SimpleIntegerProperty productId;
     private SimpleStringProperty name;
     private SimpleIntegerProperty quantity;
     private SimpleIntegerProperty demand;
 
-    public StockItem(Integer stockId, Integer userId, String name, Integer quantity, Integer demand) {
+    public StockItem(Integer stockId, Integer userId, Integer productId, String name, Integer quantity, Integer demand) {
         this.stockId = new SimpleIntegerProperty(stockId);
         this.userId = new SimpleIntegerProperty(userId);
+        this.productId = new SimpleIntegerProperty(productId);
         this.name = new SimpleStringProperty(name);
         this.quantity = new SimpleIntegerProperty(quantity);
         this.demand = new SimpleIntegerProperty(demand);
@@ -36,6 +38,10 @@ public class StockItem {
 
     public int getStockId() {
         return stockId.get();
+    }
+
+    public int getProductId() {
+        return productId.get();
     }
 
     public void setName(String name) {
@@ -69,5 +75,9 @@ public class StockItem {
     public SimpleIntegerProperty getDemandProperty() {
         return demand;
     }
-    
+
+    public SimpleIntegerProperty getProductIdProperty() {
+        return productId;
+    }
+
 }
