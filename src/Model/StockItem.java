@@ -7,25 +7,56 @@ public class StockItem {
     private SimpleIntegerProperty stockId;
     private SimpleIntegerProperty userId;
     private SimpleIntegerProperty productId;
-    private SimpleStringProperty name;
+    private SimpleStringProperty productName;
     private SimpleIntegerProperty quantity;
     private SimpleIntegerProperty demand;
+    private SimpleIntegerProperty price;
+    private SimpleIntegerProperty supplierId;
+    private SimpleStringProperty supplierName;
+    private SimpleIntegerProperty phoneNumber;
+    private SimpleStringProperty emailAddress;
 
-    public StockItem(Integer stockId, Integer userId, Integer productId, String name, Integer quantity, Integer demand) {
+    public StockItem(Integer stockId, Integer userId, Integer productId, String productName, Integer quantity, Integer demand,
+                     Integer price, Integer supplierId, String supplierName, Integer phoneNumber, String emailAddress) {
         this.stockId = new SimpleIntegerProperty(stockId);
         this.userId = new SimpleIntegerProperty(userId);
         this.productId = new SimpleIntegerProperty(productId);
-        this.name = new SimpleStringProperty(name);
+        this.productName = new SimpleStringProperty(productName);
         this.quantity = new SimpleIntegerProperty(quantity);
         this.demand = new SimpleIntegerProperty(demand);
+        this.price = new SimpleIntegerProperty(price);
+        this.supplierId = new SimpleIntegerProperty(supplierId);
+        this.supplierName = new SimpleStringProperty(supplierName);
+        this.phoneNumber = new SimpleIntegerProperty(phoneNumber);
+        this.emailAddress = new SimpleStringProperty(emailAddress);
     }
 
     public int getUserId() {
         return userId.get();
     }
 
-    public String getName() {
-        return name.get();
+    public String getProductName() {
+        return productName.get();
+    }
+
+    public int getSupplierId() {
+        return supplierId.get();
+    }
+
+    public int getPrice() {
+        return price.get();
+    }
+
+    public int getPhoneNumber() {
+        return phoneNumber.get();
+    }
+
+    public String getSupplierName() {
+        return supplierName.get();
+    }
+
+    public String getEmailAddress() {
+        return emailAddress.get();
     }
 
     public int getQuantity() {
@@ -44,8 +75,24 @@ public class StockItem {
         return productId.get();
     }
 
-    public void setName(String name) {
-        this.name.set(name);
+    public void setPrice(int price) {
+        this.price.set(price);
+    }
+
+    public void setProductName(String productName) {
+        this.productName.set(productName);
+    }
+
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber.set(phoneNumber);
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress.set(emailAddress);
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName.set(supplierName);
     }
 
     public void setDemand(int demand) {
@@ -56,6 +103,38 @@ public class StockItem {
         this.quantity.set(quantity);
     }
 
+    public SimpleIntegerProperty supplierIdProperty() {
+        return supplierId;
+    }
+
+    public SimpleIntegerProperty demandProperty() {
+        return demand;
+    }
+
+    public SimpleIntegerProperty priceProperty() {
+        return price;
+    }
+
+    public SimpleIntegerProperty productIdProperty() {
+        return productId;
+    }
+
+    public SimpleIntegerProperty quantityProperty() {
+        return quantity;
+    }
+
+    public SimpleIntegerProperty stockIdProperty() {
+        return stockId;
+    }
+
+    public SimpleIntegerProperty userIdProperty() {
+        return userId;
+    }
+
+    public SimpleStringProperty productNameProperty() {
+        return productName;
+    }
+
     public SimpleIntegerProperty getStockIdProperty() {
         return stockId;
     }
@@ -64,9 +143,6 @@ public class StockItem {
         return userId;
     }
 
-    public SimpleStringProperty getNameProperty() {
-        return name;
-    }
 
     public SimpleIntegerProperty getQuantityProperty() {
         return quantity;
