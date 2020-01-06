@@ -51,6 +51,9 @@ public class StockRoomPanelController {
 
     @FXML
     void addProduct(ActionEvent event) {
+        String name = nameTextField.getText();
+        Integer quantity = Integer.valueOf(quantityTextField.getText());
+        Integer demand = Integer.valueOf(demandTextField.getText());
 
     }
 
@@ -65,7 +68,6 @@ public class StockRoomPanelController {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainMenuScene.fxml"));
         Parent mainMenu = (Parent) loader.load();
-        MainMenuController controller = loader.<MainMenuController>getController();
 
         Scene oldScene = stage.getScene();
         stage.setScene(new Scene(mainMenu, oldScene.getWidth(), oldScene.getHeight()));
