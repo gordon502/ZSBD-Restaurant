@@ -62,6 +62,7 @@
    <center>
       <TableView fx:id="userTable" prefHeight="600.0" prefWidth="0.0" BorderPane.alignment="CENTER">
         <columns>
+            <TableColumn prefWidth="100.0" text="StockId" />
           <TableColumn prefWidth="100.0" text="UserId" />
             <TableColumn prefWidth="100.0" text="Name" />
             <TableColumn prefWidth="100.0" text="Quantity" />

@@ -1,0 +1,73 @@
+package Model;
+
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
+public class StockItem {
+    private SimpleIntegerProperty stockId;
+    private SimpleIntegerProperty userId;
+    private SimpleStringProperty name;
+    private SimpleIntegerProperty quantity;
+    private SimpleIntegerProperty demand;
+
+    public StockItem(Integer stockId, Integer userId, String name, Integer quantity, Integer demand) {
+        this.stockId = new SimpleIntegerProperty(stockId);
+        this.userId = new SimpleIntegerProperty(userId);
+        this.name = new SimpleStringProperty(name);
+        this.quantity = new SimpleIntegerProperty(quantity);
+        this.demand = new SimpleIntegerProperty(demand);
+    }
+
+    public int getUserId() {
+        return userId.get();
+    }
+
+    public String getName() {
+        return name.get();
+    }
+
+    public int getQuantity() {
+        return quantity.get();
+    }
+
+    public int getDemand() {
+        return demand.get();
+    }
+
+    public int getStockId() {
+        return stockId.get();
+    }
+
+    public void setName(String name) {
+        this.name = new SimpleStringProperty(name);
+    }
+
+    public void setDemand(int demand) {
+        this.demand = new SimpleIntegerProperty(demand);
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = new SimpleIntegerProperty(quantity);
+    }
+
+    public SimpleIntegerProperty getStockIdProperty() {
+        return stockId;
+    }
+
+    public SimpleIntegerProperty getUserIdProperty() {
+        return userId;
+    }
+
+    public SimpleStringProperty getNameProperty() {
+        return name;
+    }
+
+    public SimpleIntegerProperty getQuantityProperty() {
+        return quantity;
+    }
+
+    public SimpleIntegerProperty getDemandProperty() {
+        return demand;
+    }
+    
+}

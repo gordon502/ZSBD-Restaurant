@@ -22,11 +22,11 @@ public class Main extends Application {
 
         ConnectionData.conn = null;
         Properties connectionProps = new Properties();
-        connectionProps.put("user", "ot");
-        connectionProps.put("password", "Orcl1234");
+        connectionProps.put("user", "sys as sysdba");
+        connectionProps.put("password", "Oracle123");
         try {
-            ConnectionData.conn = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/"+
-            "pdborcl", connectionProps);
+            ConnectionData.conn = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1524/"+
+            "XE", connectionProps);
             System.out.println("Połączono z bazą danych");
         } catch (SQLException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE,
