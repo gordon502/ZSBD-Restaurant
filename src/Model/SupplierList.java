@@ -15,7 +15,7 @@ public class SupplierList {
         ArrayList temp = new ArrayList();
         Statement stmt = ConnectionData.conn.createStatement();
         ResultSet rs = stmt.executeQuery(
-                "SELECT * FROM suppliers");
+                "SELECT * FROM supplier");
         while (rs.next()) {
             temp.add(new Supplier(rs.getInt("SupplierId"), rs.getString("Name"), rs.getInt("PhoneNumber"), rs.getString("EmailAddress")));
         }

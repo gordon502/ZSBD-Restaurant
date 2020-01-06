@@ -1,5 +1,8 @@
 package Controller;
 
+import Model.ConnectionData;
+import Model.Supplier;
+import Model.SupplierList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -7,15 +10,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class StockRoomPanelController {
 
@@ -26,10 +27,13 @@ public class StockRoomPanelController {
     private TextField nameTextField;
 
     @FXML
-    private PasswordField quantityTextField;
+    private TextField quantityTextField;
 
     @FXML
     private TextField demandTextField;
+
+    @FXML
+    private TextField priceTextField;
 
     @FXML
     private Label userLabel;
@@ -41,19 +45,43 @@ public class StockRoomPanelController {
     private Button modifyButton;
 
     @FXML
-    private Button showSuppliersButton;
-
-    @FXML
     private Button backButton;
 
     @FXML
-    private TableView<?> userTable;
+    private ComboBox<String> supplierComboBox;
+
+    @FXML
+    private TableView<?> stockItemTable;
 
     @FXML
     void addProduct(ActionEvent event) {
-        String name = nameTextField.getText();
-        Integer quantity = Integer.valueOf(quantityTextField.getText());
-        Integer demand = Integer.valueOf(demandTextField.getText());
+        String name;
+        Integer quantity;
+        Integer demand;
+        boolean dataFlag = true;
+
+        if (!nameTextField.getText().equals("")) { name = nameTextField.getText(); }
+        else { dataFlag = false; }
+
+        try { quantity = Integer.valueOf(quantityTextField.getText()); }
+        catch (NumberFormatException e) { dataFlag = false; }
+
+        try { demand = Integer.valueOf(demandTextField.getText()); }
+        catch (NumberFormatException e) { dataFlag = false; }
+
+        //if data are correct
+        if (dataFlag) {
+            //insert into database
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error!");
+            alert.setHeaderText(null);
+            alert.setContentText("Entered data is incorrect!");
+
+            alert.showAndWait();
+        }
+
 
     }
 
@@ -81,7 +109,7 @@ public class StockRoomPanelController {
     @FXML
     public void initialize() {
         modifyButton.setDisable(false);
-        showSuppliersButton.setDisable(false);
+
 
         //force quantityTextField and demandTextField to get only numeric values
         quantityTextField.textProperty().addListener(new ChangeListener<String>() {
@@ -102,6 +130,12 @@ public class StockRoomPanelController {
                 }
             }
         });
+
+        for (Supplier sup : SupplierList.suppliers) {
+            supplierComboBox.getItems().add(sup.getSupplierId() + ". " + sup.getName());
+        }
+
+
 
     }
 
