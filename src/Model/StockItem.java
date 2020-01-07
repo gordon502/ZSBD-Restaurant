@@ -79,6 +79,14 @@ public class StockItem {
         this.price.set(price);
     }
 
+    public void setUserId(int userId) {
+        this.userId.set(userId);
+    }
+
+    public void setSupplierId(int supplierId) {
+        this.supplierId.set(supplierId);
+    }
+
     public void setProductName(String productName) {
         this.productName.set(productName);
     }
