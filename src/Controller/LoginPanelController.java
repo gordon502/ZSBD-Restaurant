@@ -15,6 +15,8 @@ import java.util.Optional;
 
 import Model.UserData;
 
+import javax.jws.soap.SOAPBinding;
+
 public class LoginPanelController {
 
     @FXML
@@ -56,6 +58,7 @@ public class LoginPanelController {
         //should be written with database information after successfully authorization
         UserData.login = login;
         UserData.function = function;
+        UserData.id = 1;
 
         Stage stage = (Stage) loginButton.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainMenuScene.fxml"));
