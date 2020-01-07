@@ -59,7 +59,7 @@
                </VBox.margin>
             </Button>
             <Button fx:id="modifyButton" mnemonicParsing="false" onAction="#modifyProduct" prefHeight="25.0" prefWidth="98.0" text="Modify" />
-            <Button fx:id="suppliersPanelButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="Suppliers Panel">
+            <Button fx:id="suppliersPanelButton" mnemonicParsing="false" onAction="#showSuppliers" prefHeight="25.0" prefWidth="98.0" text="Suppliers Panel">
                <VBox.margin>
                   <Insets top="50.0" />
                </VBox.margin>
