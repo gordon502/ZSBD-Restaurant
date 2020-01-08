@@ -23,6 +23,16 @@ public class ScheduleItem {
         sunday = new SimpleStringProperty();
     }
 
+    public void reset(){
+        setMonday("");
+        setTuesday("");
+        setWednesday("");
+        setThursday("");
+        setFriday("");
+        setSaturday("");
+        setSunday("");
+    }
+
     public String getUser() {
         return user.get();
     }

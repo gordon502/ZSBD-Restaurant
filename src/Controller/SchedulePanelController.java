@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.ConnectionData;
 import Model.ScheduleItem;
 import Model.User;
 import Model.UserList;
@@ -17,8 +18,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-import javax.ejb.Schedule;
 import java.io.IOException;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +32,7 @@ public class SchedulePanelController {
     ObservableList<ScheduleItem> scheduleItems;
     ArrayList time;
     Calendar now;
+    String currentWeek;
 
     @FXML
     private Label weekLabel;
@@ -63,33 +68,75 @@ public class SchedulePanelController {
     private TableView<ScheduleItem> scheduleTable;
 
     @FXML
-    void addmod(ActionEvent event) {
-        if (!Arrays.asList(userCombo.getSelectionModel().getSelectedIndex(), dayCombo.getSelectionModel().getSelectedIndex(), startCombo.getSelectionModel().getSelectedIndex(), endCombo.getSelectionModel().getSelectedIndex()).contains(-1)){
-            ScheduleItem scheduleItem = scheduleItems.get(userCombo.getSelectionModel().getSelectedIndex());
-            scheduleItem.set(dayCombo.getSelectionModel().getSelectedIndex(), startCombo.getSelectionModel().getSelectedItem()+" - "+endCombo.getSelectionModel().getSelectedItem());
+    void addmod(ActionEvent event) throws SQLException {
 
-            System.out.println(scheduleItem.getMonday());
+        if (!Arrays.asList(userCombo.getSelectionModel().getSelectedIndex(), dayCombo.getSelectionModel().getSelectedIndex(), startCombo.getSelectionModel().getSelectedIndex(), endCombo.getSelectionModel().getSelectedIndex()).contains(-1)) {
+            String user = userCombo.getSelectionModel().getSelectedItem();
+            int day = dayCombo.getSelectionModel().getSelectedIndex();
+            String start = startCombo.getSelectionModel().getSelectedItem();
+            String end = endCombo.getSelectionModel().getSelectedItem();
+
+            ScheduleItem scheduleItem = scheduleItems.get(userCombo.getSelectionModel().getSelectedIndex());
+            scheduleItem.set(dayCombo.getSelectionModel().getSelectedIndex(), start + " - " + end);
+
+            CallableStatement stmt = ConnectionData.conn.prepareCall("{call ADD_SCHEDULE(?,?,?,?,?,?)}");
+
+            stmt.setString(1, user.split(" ")[0]);
+            stmt.setDate(2, java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(now.getTime())));
+            now.add(Calendar.DAY_OF_YEAR, day);
+            stmt.setDate(3, java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(now.getTime())));
+            now.add(Calendar.DAY_OF_YEAR, -day);
+            stmt.setInt(4, day);
+            stmt.setString(5, start);
+            stmt.setString(6, end);
+
+            stmt.execute();
+            stmt.close();
         }
     }
 
+    public void clearSchedule(){
+        for (ScheduleItem scheduleItem : scheduleItems){
+            System.out.println(scheduleItem.getUser());
+            scheduleItem.reset();
+            System.out.println(scheduleItem.getWednesday());
+        }
+        scheduleTable.setItems(scheduleItems);
+    }
+
     @FXML
-    void removeSchedule(ActionEvent event) {
+    void removeSchedule(ActionEvent event) throws SQLException {
+        if (!Arrays.asList(userCombo.getSelectionModel().getSelectedIndex(), dayCombo.getSelectionModel()).contains(-1)) {
+            now.add(Calendar.DAY_OF_YEAR, dayCombo.getSelectionModel().getSelectedIndex());
+            PreparedStatement stmt = ConnectionData.conn.prepareStatement("delete from schedule where UserId=? and DayDate=?");
+            stmt.setInt(1, Integer.valueOf(userCombo.getSelectionModel().getSelectedItem().split(" ")[0]));
+            stmt.setDate(2, java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(now.getTime())));
+            now.add(Calendar.DAY_OF_YEAR, -dayCombo.getSelectionModel().getSelectedIndex());
+            stmt.executeUpdate();
+            stmt.close();
+
+            ScheduleItem scheduleItem = scheduleItems.get(userCombo.getSelectionModel().getSelectedIndex());
+            scheduleItem.set(dayCombo.getSelectionModel().getSelectedIndex(), null);
+        }
 
     }
 
     @FXML
-    void nextWeek(ActionEvent event) {
+    void nextWeek(ActionEvent event) throws SQLException {
         now.add(Calendar.DAY_OF_YEAR, 7);
         updateLabels();
+        setupSchedule();
     }
 
     @FXML
-    void prevWeek(ActionEvent event) {
+    void prevWeek(ActionEvent event) throws SQLException {
         now.add(Calendar.DAY_OF_YEAR, -7);
         updateLabels();
+        setupSchedule();
     }
 
     public void updateLabels() {
+        currentWeek = new SimpleDateFormat("dd.MM.yyyy").format(now.getTime());
         weekLabel.setText(new SimpleDateFormat("dd.MM.yyyy").format(now.getTime()));
 
         scheduleTable.getColumns().get(1).setText("Mon.\n" + new SimpleDateFormat("dd.MM").format(now.getTime()));
@@ -106,7 +153,6 @@ public class SchedulePanelController {
         now.add(Calendar.DAY_OF_YEAR, 1);
         scheduleTable.getColumns().get(7).setText("Sun.\n" + new SimpleDateFormat("dd.MM").format(now.getTime()));
         now.add(Calendar.DAY_OF_YEAR, -6);
-        System.out.println(new SimpleDateFormat("dd.MM.yyyy").format(now.getTime()));
     }
 
     @FXML
@@ -121,8 +167,28 @@ public class SchedulePanelController {
         stage.setScene(new Scene(mainMenu, oldScene.getWidth(), oldScene.getHeight()));
     }
 
+    public void setupSchedule() throws SQLException {
+        clearSchedule();
+        PreparedStatement stmt = ConnectionData.conn.prepareStatement("SELECT userid, weekday, starttime, endtime FROM schedule where WeekDate=?");
+        stmt.setDate(1, java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(now.getTime())));
+        ResultSet rs=stmt.executeQuery();
+        while (rs.next()) {
+            int userid=rs.getInt("userid");
+            for(ScheduleItem scheduleItem : scheduleItems){
+                if(Integer.valueOf(scheduleItem.getUser().split(" ")[0])==userid){
+                    scheduleItem.set(rs.getInt("weekday"), rs.getString("starttime")+" - "+rs.getString("endtime"));
+                    break;
+                }
+            }
+
+        }
+        rs.close();
+        stmt.close();
+
+    }
+
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
         now = Calendar.getInstance();
         int weekday = now.get(Calendar.DAY_OF_WEEK);
         if (weekday != Calendar.MONDAY) {
@@ -171,5 +237,6 @@ public class SchedulePanelController {
 
             }
         });
+        setupSchedule();
     }
 }

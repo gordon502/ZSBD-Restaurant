@@ -192,7 +192,6 @@ public class UsersPanelController {
                     "update users set fired=1 where userid=?");
             stmt.setInt(1, chosenUserId);
             int changes = stmt.executeUpdate();
-            System.out.println("Zmodyfikowano " + changes + " krotek.");
             stmt.close();
             User firedUser = userTable.getSelectionModel().getSelectedItem();
             UserList.firedUsers.add(firedUser);
