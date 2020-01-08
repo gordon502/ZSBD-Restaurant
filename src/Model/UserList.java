@@ -24,7 +24,6 @@ public class UserList {
                     rs.getString("FirstName"), rs.getString("LastName"),
                     rs.getString("JobPosition"), rs.getFloat("HourlyRate"),
                     rs.getInt("PhoneNumber"), rs.getInt("Fired"));
-            System.out.println(user.getLogin() + " " + String.valueOf(user.getFired()));
             if (user.getFired() == 1) {fireTemp.add(user);}
             else {temp.add(user);}
         }

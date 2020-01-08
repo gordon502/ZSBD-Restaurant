@@ -292,7 +292,6 @@ public class UsersPanelController {
         userTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 fillUserData(newValue);
-//                registerButton.setDisable(true);
                 modifyButton.setDisable(false);
                 fireButton.setDisable(false);
                 firedTable.getSelectionModel().select(null);
