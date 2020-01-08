@@ -102,13 +102,23 @@ public class SuppliersPanelController {
             stmt.setString(1, name); stmt.setInt(2, phone);
             stmt.setString(3, email); stmt.setInt(4, chosenSupplierId);
             stmt.executeUpdate();
-            stmt.close();
 
             Supplier modifiedSupplier = supplierTable.getSelectionModel().getSelectedItem();
             modifiedSupplier.setPhoneNumber(phone);
             modifiedSupplier.setEmail(email);
             modifiedSupplier.setName(name);
-            //supplierTable.setItems(SupplierList.suppliers);
+
+            stmt = ConnectionData.conn.prepareStatement("UPDATE Supplier SET Name = ?, PhoneNumber = ?, EmailAddress = ? " +
+                    "WHERE SupplierId = ?");
+            stmt.setString(1, name); stmt.setInt(2, phone);
+            stmt.setString(3, email); stmt.setInt(4, modifiedSupplier.getSupplierId());
+            stmt.executeUpdate();
+            stmt.close();
+
+            //update list with db
+            StockItemList.readItems();
+
+            supplierTable.refresh();
         }
         else {
             showErrorAlert();
