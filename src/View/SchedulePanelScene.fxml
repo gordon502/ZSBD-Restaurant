@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <StackPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SchedulePanelController">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
@@ -62,7 +61,7 @@
          <center>
             <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <columns>
-                <TableColumn prefWidth="75.0" text="UserId" />
+                <TableColumn prefWidth="75.0" text="User" />
                   <TableColumn prefWidth="75.0" text="Mon.&#10;date" />
                   <TableColumn prefWidth="75.0" text="Tue.&#10;date" />
                   <TableColumn prefWidth="75.0" text="Wed.&#10;date" />

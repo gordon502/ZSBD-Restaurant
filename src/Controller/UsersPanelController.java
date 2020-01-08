@@ -21,12 +21,12 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class UsersPanelController {
-//    private ObservableList<User> users;
     private Integer chosenUserId = null;
 
     @FXML
@@ -72,7 +72,7 @@ public class UsersPanelController {
     private Button backButton;
 
     @FXML
-    private GridPane dataGrid;
+    private TableView<User> firedTable;
 
     @FXML
     void modifyUser(ActionEvent event) throws SQLException {
@@ -195,6 +195,7 @@ public class UsersPanelController {
             System.out.println("Zmodyfikowano " + changes + " krotek.");
             stmt.close();
             User firedUser = userTable.getSelectionModel().getSelectedItem();
+            UserList.firedUsers.add(firedUser);
             UserList.users.remove(firedUser);
             firedUser.setFired(1);
         }
@@ -213,7 +214,6 @@ public class UsersPanelController {
         postitionCombo.getSelectionModel().select(null);
         userTable.getSelectionModel().select(null);
         userLabel.setText("New user");
-//        registerButton.setDisable(false);
         modifyButton.setDisable(true);
         fireButton.setDisable(true);
     }
@@ -230,21 +230,6 @@ public class UsersPanelController {
         postitionCombo.getSelectionModel().select(user.getPosition());
         userLabel.setText(String.valueOf(user.getUserId()) + " - " + user.getFirstName() + " " + user.getLastName());
     }
-
-//    public void readUsers() throws SQLException {
-//        ArrayList temp = new ArrayList();
-//        Statement stmt = ConnectionData.conn.createStatement();
-//        ResultSet rs = stmt.executeQuery(
-//                "SELECT * FROM users where fired=0");
-//        while (rs.next()) {
-//            temp.add(new User(rs.getInt("UserId"), rs.getString("Login"),
-//                    rs.getString("Password"), rs.getString("Function")
-//                    , rs.getString("FirstName"), rs.getString("LastName"), rs.getString("JobPosition"), rs.getFloat("HourlyRate"), rs.getInt("PhoneNumber"), rs.getInt("Fired")));
-//        }
-//        rs.close();
-//        stmt.close();
-//        UserList.users = FXCollections.observableArrayList(temp);
-//    }
 
     @FXML
     public void initialize() {
@@ -293,12 +278,30 @@ public class UsersPanelController {
 //        readUsers();
         userTable.setItems(UserList.users);
 
+        firedTable.getColumns().get(0).setCellValueFactory(new PropertyValueFactory("userId"));
+        firedTable.getColumns().get(1).setCellValueFactory(new PropertyValueFactory("login"));
+        firedTable.getColumns().get(2).setCellValueFactory(new PropertyValueFactory("firstName"));
+        firedTable.getColumns().get(3).setCellValueFactory(new PropertyValueFactory("lastName"));
+        firedTable.getColumns().get(4).setCellValueFactory(new PropertyValueFactory("position"));
+        firedTable.getColumns().get(5).setCellValueFactory(new PropertyValueFactory("hourRate"));
+        firedTable.getColumns().get(6).setCellValueFactory(new PropertyValueFactory("phone"));
+
+        firedTable.setItems(UserList.firedUsers);
+
+
         userTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 fillUserData(newValue);
 //                registerButton.setDisable(true);
                 modifyButton.setDisable(false);
                 fireButton.setDisable(false);
+                firedTable.getSelectionModel().select(null);
+            }
+        });
+
+        firedTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                clear(new ActionEvent());
             }
         });
     }
