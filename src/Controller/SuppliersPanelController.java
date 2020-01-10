@@ -185,9 +185,9 @@ public class SuppliersPanelController {
 
 
     private void clear() {
-        nameTextField.setText(null);
-        phoneTextField.setText(null);
-        emailTextField.setText(null);
+        nameTextField.clear();
+        phoneTextField.clear();
+        emailTextField.clear();
         modifyButton.setDisable(true);
     }
 

@@ -292,12 +292,13 @@ public class StockRoomPanelController {
     }
 
     private void clear() {
-        nameTextField.setText(null);
-        quantityTextField.setText(null);
-        demandTextField.setText(null);
-        priceTextField.setText(null);
-        supplierComboBox.setValue(null);
+        nameTextField.clear();
+        quantityTextField.clear();
+        demandTextField.clear();
+        priceTextField.clear();
+        supplierComboBox.setValue("Select");
         chosenStockId = null;
+        modifyButton.setDisable(true);
     }
 
 }
