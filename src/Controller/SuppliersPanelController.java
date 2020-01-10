@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
+import java.util.regex.Pattern;
 
 public class SuppliersPanelController {
 
@@ -85,9 +86,6 @@ public class SuppliersPanelController {
 
             clear();
         }
-        else {
-            showErrorAlert();
-        }
 
     }
 
@@ -120,10 +118,6 @@ public class SuppliersPanelController {
 
             supplierTable.refresh();
         }
-        else {
-            showErrorAlert();
-        }
-
     }
 
     @FXML
@@ -168,21 +162,30 @@ public class SuppliersPanelController {
 
     private boolean checkData() {
         boolean dataFlag = true;
-        if (nameTextField.getText().equals("")) { dataFlag = false; }
+        if (nameTextField.getText().equals("")) {
+            dataFlag = false;
+            showErrorAlert("Name field is empty!");
+        }
 
         try { Integer.valueOf(phoneTextField.getText()); }
-        catch (NumberFormatException e) { dataFlag = false; }
+        catch (NumberFormatException e) {
+            dataFlag = false;
+            showErrorAlert("Phone field is empty or format is wrong!");
+        }
 
-        if (emailTextField.getText().equals("")) { dataFlag = false; }
+        if (!isEmailValid(emailTextField.getText())) {
+            dataFlag = false;
+            showErrorAlert("Email field is empty or not valid!");
+        }
 
         return dataFlag;
     }
 
-    private void showErrorAlert() {
+    private void showErrorAlert(String errorMessage) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error!");
         alert.setHeaderText(null);
-        alert.setContentText("Entered data is incorrect!");
+        alert.setContentText(errorMessage);
 
         alert.showAndWait();
     }
@@ -192,6 +195,19 @@ public class SuppliersPanelController {
         phoneTextField.setText(null);
         emailTextField.setText(null);
         modifyButton.setDisable(true);
+    }
+
+    public  boolean isEmailValid(String email)
+    {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            return false;
+        return pat.matcher(email).matches();
     }
 
 
