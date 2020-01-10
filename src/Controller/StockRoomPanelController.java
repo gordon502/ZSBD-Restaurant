@@ -113,11 +113,6 @@ public class StockRoomPanelController {
 
             clear();
         }
-        else {
-            showErrorAlert();
-        }
-
-
     }
 
     @FXML
@@ -160,9 +155,6 @@ public class StockRoomPanelController {
             rs.close();
 
             stockItemTable.refresh();
-        }
-        else {
-            showErrorAlert();
         }
     }
 
@@ -257,20 +249,35 @@ public class StockRoomPanelController {
     private boolean checkData() {
         boolean dataFlag = true;
 
-        try { Integer.valueOf(demandTextField.getText()); }
-        catch (NumberFormatException e) { dataFlag = false; }
+        if (!nameTextField.getText().equals("")) {  }
+        else {
+            dataFlag = false;
+            Alerts.showErrorAlert("Name field is empty!");
+        }
 
         try { Integer.valueOf(quantityTextField.getText()); }
-        catch (NumberFormatException e) { dataFlag = false; }
+        catch (NumberFormatException e) {
+            dataFlag = false;
+            Alerts.showErrorAlert("Quantity field is empty!");
+        }
+
+        try { Integer.valueOf(demandTextField.getText()); }
+        catch (NumberFormatException e) {
+            dataFlag = false;
+            Alerts.showErrorAlert("Demand field is empty!");
+        }
 
         try { Integer.valueOf(priceTextField.getText()); }
-        catch (NumberFormatException e) { dataFlag = false; }
+        catch (NumberFormatException e) {
+            dataFlag = false;
+            Alerts.showErrorAlert("Price field is empty!");
+        }
 
         String supp = supplierComboBox.getValue();
-        if (supp.indexOf(".") == -1) { dataFlag = false; }
-
-        if (!nameTextField.getText().equals("")) {  }
-        else { dataFlag = false; }
+        if (supp == null) {
+            dataFlag = false;
+            Alerts.showErrorAlert("You didn't choose supplier!");
+        }
 
         return dataFlag;
     }
@@ -282,15 +289,6 @@ public class StockRoomPanelController {
         demandTextField.setText(Integer.toString(stockItem.getDemand()));
         priceTextField.setText(Integer.toString(stockItem.getPrice()));
         supplierComboBox.setValue(Integer.toString(stockItem.getSupplierId()) + ". " + String.valueOf(stockItem.getSupplierName()));
-    }
-
-    private void showErrorAlert() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error!");
-        alert.setHeaderText(null);
-        alert.setContentText("Entered data is incorrect!");
-
-        alert.showAndWait();
     }
 
     private void clear() {
