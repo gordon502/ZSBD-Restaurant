@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.ConnectionData;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +9,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Connection;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,20 +30,14 @@ public class LoginPanelController {
     private PasswordField passwordTextField;
 
     @FXML
-    public void login() throws IOException {
+    public void login() throws IOException, SQLException {
 
         /*
         here should be login and password authorization
         with database
          */
 
-
-        //placeholders for user informations
-        String login = loginTextField.getText();
-        String password = passwordTextField.getText();
-        String function = "";
-
-        //choiceDialog for debug purposes
+        /*//choiceDialog for debug purposes
         List<String> choices = new ArrayList<>();
         choices.add("manager");
         choices.add("employee");
@@ -53,19 +48,43 @@ public class LoginPanelController {
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
             function = result.get();
+        }*/
+
+        if (verifyUser()) {
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainMenuScene.fxml"));
+            Parent parent = (Parent) loader.load();
+            MainMenuController controller = loader.<MainMenuController>getController();
+
+            Scene oldScene = stage.getScene();
+            stage.setScene(new Scene(parent, oldScene.getWidth(), oldScene.getHeight()));
+        }
+        else {
+            passwordTextField.setText(null);
+            Alerts.showErrorAlert("Wrong login or password!");
         }
 
-        //should be written with database information after successfully authorization
-        UserData.login = login;
-        UserData.function = function;
-        UserData.id = 1;
 
-        Stage stage = (Stage) loginButton.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainMenuScene.fxml"));
-        Parent parent = (Parent) loader.load();
-        MainMenuController controller = loader.<MainMenuController>getController();
+    }
 
-        Scene oldScene = stage.getScene();
-        stage.setScene(new Scene(parent, oldScene.getWidth(), oldScene.getHeight()));
+    //login verification
+    private boolean verifyUser() throws SQLException {
+        String login = loginTextField.getText();
+        String password = passwordTextField.getText();
+        PreparedStatement stmt = ConnectionData.conn.prepareStatement("SELECT COUNT(*) Over() as ccc, UserId, Login, Function " +
+                "FROM Users WHERE Login = ? AND Password = ?");
+        stmt.setString(1, login);
+        stmt.setString(2, password);
+        ResultSet rs = stmt.executeQuery();
+        while(rs.next()){
+            System.out.println(rs.getInt(1));
+            if (rs.getInt(1) == 1) {
+                UserData.id = rs.getInt("UserId");
+                UserData.login = rs.getString("Login");
+                UserData.function = rs.getString("Function");
+                return true;
+            }
+        }
+        return false;
     }
 }

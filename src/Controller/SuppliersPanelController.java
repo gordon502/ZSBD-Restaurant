@@ -19,6 +19,8 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.util.regex.Pattern;
 
+import static Controller.Alerts.showErrorAlert;
+
 public class SuppliersPanelController {
 
     private int chosenSupplierId;
@@ -164,31 +166,23 @@ public class SuppliersPanelController {
         boolean dataFlag = true;
         if (nameTextField.getText().equals("")) {
             dataFlag = false;
-            showErrorAlert("Name field is empty!");
+            Alerts.showErrorAlert("Name field is empty!");
         }
 
         try { Integer.valueOf(phoneTextField.getText()); }
         catch (NumberFormatException e) {
             dataFlag = false;
-            showErrorAlert("Phone field is empty or format is wrong!");
+            Alerts.showErrorAlert("Phone field is empty or format is wrong!");
         }
 
         if (!isEmailValid(emailTextField.getText())) {
             dataFlag = false;
-            showErrorAlert("Email field is empty or not valid!");
+            Alerts.showErrorAlert("Email field is empty or not valid!");
         }
 
         return dataFlag;
     }
 
-    private void showErrorAlert(String errorMessage) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error!");
-        alert.setHeaderText(null);
-        alert.setContentText(errorMessage);
-
-        alert.showAndWait();
-    }
 
     private void clear() {
         nameTextField.setText(null);
