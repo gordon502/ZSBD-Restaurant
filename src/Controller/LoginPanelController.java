@@ -82,6 +82,8 @@ public class LoginPanelController {
                 UserData.id = rs.getInt("UserId");
                 UserData.login = rs.getString("Login");
                 UserData.function = rs.getString("Function");
+                rs.close();
+                stmt.close();
                 return true;
             }
         }
