@@ -33,15 +33,15 @@ public class WorkshiftPanelController {
             this.userid = userid;
             this.date = date;
         }
+
         @Override
-        public int hashCode()
-        {
-            return (userid +date).hashCode();
+        public int hashCode() {
+            return (userid + date).hashCode();
         }
+
         @Override
-        public boolean equals(Object o)
-        {
-            return this.userid==((WorkshiftId) o).userid && this.date.equals(((WorkshiftId) o).date);
+        public boolean equals(Object o) {
+            return this.userid == ((WorkshiftId) o).userid && this.date.equals(((WorkshiftId) o).date);
         }
     }
 
@@ -121,7 +121,7 @@ public class WorkshiftPanelController {
 
     @FXML
     void countHours(ActionEvent event) throws SQLException {
-        if(userCombo.getSelectionModel().getSelectedIndex()!=-1 && startDate.getValue()!=null && endDate.getValue()!=null){
+        if (userCombo.getSelectionModel().getSelectedIndex() != -1 && startDate.getValue() != null && endDate.getValue() != null) {
             CallableStatement stmt = ConnectionData.conn.prepareCall("{? = call EMPLOYEEHOURS(?, ?, ?)}");
             stmt.setInt(2, Integer.valueOf(userCombo.getSelectionModel().getSelectedItem().split(" ")[0]));
             stmt.setDate(3, Date.valueOf(startDate.getValue()));
@@ -151,8 +151,25 @@ public class WorkshiftPanelController {
     }
 
     @FXML
-    void scheduleGenerate(ActionEvent event) {
+    void scheduleGenerate(ActionEvent event) throws SQLException {
+        if (userCombo.getSelectionModel().getSelectedIndex() != -1 && startDate.getValue() != null && endDate.getValue() != null) {
+            PreparedStatement stmt = ConnectionData.conn.prepareStatement("delete from workshift where userid=? AND dateofws>=? AND dateofws<=?");
+            stmt.setInt(1, Integer.valueOf(userCombo.getSelectionModel().getSelectedItem().split(" ")[0]));
+            stmt.setDate(2, Date.valueOf(startDate.getValue()));
+            stmt.setDate(3, Date.valueOf(endDate.getValue()));
+            int changes = stmt.executeUpdate();
+            stmt.close();
 
+            stmt = ConnectionData.conn.prepareStatement("insert into workshift (userid, dateofws, starttime, endtime, hours)\n" +
+                    "select userid, daydate, starttime, endtime, hours\n" +
+                    "from schedule where userid=? AND daydate>=? AND daydate<=?");
+            stmt.setInt(1, Integer.valueOf(userCombo.getSelectionModel().getSelectedItem().split(" ")[0]));
+            stmt.setDate(2, Date.valueOf(startDate.getValue()));
+            stmt.setDate(3, Date.valueOf(endDate.getValue()));
+            changes = stmt.executeUpdate();
+            stmt.close();
+            readUserWorkshifts();
+        }
     }
 
     @FXML

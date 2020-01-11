@@ -79,7 +79,7 @@ public class SchedulePanelController {
             ScheduleItem scheduleItem = scheduleItems.get(userCombo.getSelectionModel().getSelectedIndex());
             scheduleItem.set(dayCombo.getSelectionModel().getSelectedIndex(), start + " - " + end);
 
-            CallableStatement stmt = ConnectionData.conn.prepareCall("{call ADD_SCHEDULE(?,?,?,?,?,?)}");
+            CallableStatement stmt = ConnectionData.conn.prepareCall("{call ADD_SCHEDULE(?,?,?,?,?,?, ?)}");
 
             stmt.setString(1, user.split(" ")[0]);
             stmt.setDate(2, java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(now.getTime())));
@@ -89,6 +89,7 @@ public class SchedulePanelController {
             stmt.setInt(4, day);
             stmt.setString(5, start);
             stmt.setString(6, end);
+            stmt.setInt(7, Integer.valueOf(end.split(":")[0])-Integer.valueOf(start.split(":")[0]));
 
             stmt.execute();
             stmt.close();

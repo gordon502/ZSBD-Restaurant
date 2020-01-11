@@ -45,6 +45,7 @@ CREATE TABLE Schedule (
 	WeekDay INT NOT NULL CHECK (WeekDay>=0 AND WeekDay<7),
 	StartTime NVARCHAR2(5) NOT NULL,
 	EndTime NVARCHAR2(5) NOT NULL,
+	Hours INT NOT NULL,
 	constraint SCHEDULE_PK PRIMARY KEY (ScheduleId));
 
 /
@@ -191,12 +192,13 @@ CREATE OR REPLACE PROCEDURE ADD_SCHEDULE
     dateOfDay Date,
     WeekD INT,
     StartT NVARCHAR2,
-    EndT NVARCHAR2
+    EndT NVARCHAR2,
+    HourT INT
 ) IS
 BEGIN
     DELETE FROM Schedule
     WHERE UserId=idUser AND DayDate=dateOfDay;
-    INSERT INTO Schedule VALUES(NULL, idUser, Week, dateOfDay, WeekD, StartT, EndT);
+    INSERT INTO Schedule VALUES(NULL, idUser, Week, dateOfDay, WeekD, StartT, EndT, HourT);
 END ADD_SCHEDULE;
 /
 Commit;

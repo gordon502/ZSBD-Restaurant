@@ -166,13 +166,11 @@ public class UsersPanelController {
 
         stmt.execute();
         int userid = stmt.getInt(9);
-        User newUser=new User(userid, login, password, function, firstName, lastName, position, hourRate, phone, 0);
+        User newUser = new User(userid, login, password, function, firstName, lastName, position, hourRate, phone, 0);
         UserList.users.add(newUser);
         UserList.usersMap.put(newUser.getUserId(), newUser);
 
         stmt.close();
-
-
     }
 
     @FXML
