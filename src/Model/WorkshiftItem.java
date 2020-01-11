@@ -1,30 +1,57 @@
 package Model;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class WorkshiftItem {
-    private SimpleIntegerProperty user;
+    private SimpleStringProperty user;
     private SimpleStringProperty date;
     private SimpleStringProperty start;
     private SimpleStringProperty end;
+    private int hours;
+    private int userid;
 
-    public WorkshiftItem(SimpleIntegerProperty user, SimpleStringProperty date, SimpleStringProperty start, SimpleStringProperty end) {
-        this.user = user;
-        this.date = date;
-        this.start = start;
-        this.end = end;
+    public int getUserid() {
+        return userid;
     }
 
-    public int getUser() {
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public WorkshiftItem(String user) {
+        this.user = new SimpleStringProperty(user);
+    }
+
+    public WorkshiftItem(int userid, String date, String start, String end, int hours) {
+        this.userid=userid;
+        this.user = new SimpleStringProperty(UserList.usersMap.get(userid).getUser());
+        this.date = new SimpleStringProperty(date);
+        this.start = new SimpleStringProperty(start);
+        this.end = new SimpleStringProperty(end);
+        this.hours = hours;
+    }
+
+    public int countHours(){
+        return Integer.valueOf(this.getEnd().split(":")[0]) - Integer.valueOf(this.getStart().split(":")[0]);
+    }
+
+    public String getUser() {
         return user.get();
     }
 
-    public SimpleIntegerProperty userProperty() {
+    public SimpleStringProperty userProperty() {
         return user;
     }
 
-    public void setUser(int user) {
+    public void setUser(String user) {
         this.user.set(user);
     }
 
