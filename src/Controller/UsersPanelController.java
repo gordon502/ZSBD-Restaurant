@@ -302,5 +302,20 @@ public class UsersPanelController {
                 clear(new ActionEvent());
             }
         });
+
+        registerButton.disableProperty().bind(loginTextField.textProperty().isNull().or(
+                passwordField.textProperty().isNull().or(
+                        functionComboBox.valueProperty().isNull().or(
+                                firstNameTextField.textProperty().isNull().or(
+                                        lastNameTextField.textProperty().isNull().or(
+                                                postitionCombo.valueProperty().isNull().or(
+                                                        rateTextField.textProperty().isEmpty().or(
+                                                                phoneTextField.textProperty().isEmpty()
+                                                        )
+                                                ))
+                                )
+                        )
+                )
+        ));
     }
 }

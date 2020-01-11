@@ -1,6 +1,8 @@
 package Controller;
 
 import Model.*;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -277,10 +279,14 @@ public class WorkshiftPanelController {
 
         workshiftTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
+                removeButton.setDisable(false);
                 selectedWorkshift = workshiftTable.getSelectionModel().getSelectedItem();
                 startCombo.getSelectionModel().select(selectedWorkshift.getStart());
                 endCombo.getSelectionModel().select(selectedWorkshift.getEnd());
                 selDate.setValue(LocalDate.parse(selectedWorkshift.getDate()));
+            }
+            else {
+                removeButton.setDisable(true);
             }
         });
 
@@ -293,5 +299,11 @@ public class WorkshiftPanelController {
                 }
             }
         });
+
+        genButton.disableProperty().bind(startDate.valueProperty().isNull().or(endDate.valueProperty().isNull().or(userCombo.valueProperty().isNull())));
+        countButton.disableProperty().bind(startDate.valueProperty().isNull().or(endDate.valueProperty().isNull().or(userCombo.valueProperty().isNull())));
+        addmodButton.disableProperty().bind(userCombo.valueProperty().isNull().or(selDate.valueProperty().isNull().or(startCombo.valueProperty().isNull().or(endCombo.valueProperty().isNull()))));
+//        removeButton.disableProperty().bind(userCombo.valueProperty().isNull().or(selDate.valueProperty().isNull()));
+        removeButton.setDisable(true);
     }
 }

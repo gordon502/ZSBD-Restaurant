@@ -239,5 +239,8 @@ public class SchedulePanelController {
             }
         });
         setupSchedule();
+
+        addmodButton.disableProperty().bind(userCombo.valueProperty().isNull().or(dayCombo.valueProperty().isNull().or(startCombo.valueProperty().isNull().or(endCombo.valueProperty().isNull()))));
+        removeButton.disableProperty().bind(userCombo.valueProperty().isNull().or(dayCombo.valueProperty().isNull()));
     }
 }
