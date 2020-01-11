@@ -97,9 +97,7 @@ public class SchedulePanelController {
 
     public void clearSchedule(){
         for (ScheduleItem scheduleItem : scheduleItems){
-            System.out.println(scheduleItem.getUser());
             scheduleItem.reset();
-            System.out.println(scheduleItem.getWednesday());
         }
         scheduleTable.setItems(scheduleItems);
     }
@@ -228,9 +226,11 @@ public class SchedulePanelController {
         scheduleTable.getColumns().get(7).setCellValueFactory(new PropertyValueFactory("sunday"));
         scheduleTable.setItems(scheduleItems);
 
+        endCombo.setDisable(true);
         startCombo.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 endCombo.getItems().clear();
+                endCombo.setDisable(false);
                 for (int i = newValue.intValue() + 1; i < time.size(); i++) {
                     endCombo.getItems().add(time.get(i).toString());
                 }

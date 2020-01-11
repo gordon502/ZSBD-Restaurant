@@ -38,7 +38,11 @@ public class User {
         this.position = new SimpleStringProperty(position);
         this.hourRate = new SimpleFloatProperty(hourRate);
         this.phone = new SimpleIntegerProperty(phone);
-        this.fired= new SimpleIntegerProperty(fired);
+        this.fired = new SimpleIntegerProperty(fired);
+    }
+
+    public String getUser() {
+        return String.valueOf(userId.get()) + " - " + getFirstName() + " " + getLastName();
     }
 
     public int getUserId() {

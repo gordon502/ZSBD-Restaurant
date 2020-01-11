@@ -7,10 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserList {
     public static ObservableList<User> users;
     public static ObservableList<User> firedUsers;
+    public static Map<Integer, User> usersMap = new HashMap<Integer, User>();
 
     public static void readUsers() throws SQLException {
         ArrayList temp = new ArrayList();
@@ -24,12 +27,16 @@ public class UserList {
                     rs.getString("FirstName"), rs.getString("LastName"),
                     rs.getString("JobPosition"), rs.getFloat("HourlyRate"),
                     rs.getInt("PhoneNumber"), rs.getInt("Fired"));
-            if (user.getFired() == 1) {fireTemp.add(user);}
-            else {temp.add(user);}
+            if (user.getFired() == 1) {
+                fireTemp.add(user);
+            } else {
+                temp.add(user);
+                usersMap.put(user.getUserId(), user);
+            }
         }
         rs.close();
         stmt.close();
         users = FXCollections.observableArrayList(temp);
-        firedUsers=FXCollections.observableArrayList(fireTemp);
+        firedUsers = FXCollections.observableArrayList(fireTemp);
     }
 }
