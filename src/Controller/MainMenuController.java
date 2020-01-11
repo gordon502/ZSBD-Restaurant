@@ -60,6 +60,22 @@ public class MainMenuController {
     }
 
     @FXML
+    void showWorkshiftPanel() throws IOException {
+        if (UserData.function.equals("manager")) {
+            Stage stage = (Stage) logOutButton.getScene().getWindow();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/WorkshiftPanelScene.fxml"));
+            Parent workshiftPanel = (Parent) loader.load();
+
+            Scene oldScene = stage.getScene();
+            stage.setScene(new Scene(workshiftPanel, oldScene.getWidth(), oldScene.getHeight()));
+        }
+        else {
+            showAccessDeniedAlert();
+        }
+    }
+
+    @FXML
     public void showRaportsPanel() throws IOException{
         if (UserData.function.equals("manager")) {
             Stage stage = (Stage) logOutButton.getScene().getWindow();
