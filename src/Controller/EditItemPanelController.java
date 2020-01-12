@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.FoodItem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,10 +15,10 @@ import java.io.IOException;
 public class EditItemPanelController {
 
     @FXML
-    private TableView<?> supplierTable1;
+    private TableView<FoodItem> activeFoodItemTable;
 
     @FXML
-    private TableView<?> supplierTable12;
+    private TableView<FoodItem> unactiveFoodItemTable;
 
     @FXML
     private GridPane dataGrid;
@@ -77,6 +78,12 @@ public class EditItemPanelController {
     void showMainMenu(ActionEvent event) throws IOException {
         SceneSwitcher ss = new SceneSwitcher();
         ss.switchScene(backButton, "../View/MainMenuScene.fxml");
+    }
+
+    @FXML
+    void initialize() {
+        modifyButton.setDisable(true);
+
     }
 
 }

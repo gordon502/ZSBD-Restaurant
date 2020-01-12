@@ -70,7 +70,7 @@
         <tabs>
           <Tab text="Active Items">
                <content>
-                  <TableView fx:id="supplierTable1" prefHeight="600.0" prefWidth="0.0">
+                  <TableView fx:id="activeFoodItemsTable" prefHeight="600.0" prefWidth="0.0">
                      <columns>
                         <TableColumn minWidth="0.0" prefWidth="100.0" text="FoodId" />
                         <TableColumn prefWidth="100.0" text="Name" />
@@ -86,7 +86,7 @@
           </Tab>
             <Tab text="Unactive Items">
                <content>
-                  <TableView fx:id="supplierTable12" prefHeight="600.0" prefWidth="0.0">
+                  <TableView fx:id="unactiveFoodItemsTable" prefHeight="600.0" prefWidth="0.0">
                      <columns>
                         <TableColumn minWidth="0.0" prefWidth="100.0" text="FoodId" />
                         <TableColumn prefWidth="100.0" text="Name" />

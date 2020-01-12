@@ -14,10 +14,10 @@ public class FoodItemList {
     public static void readFoodItems() throws SQLException {
         ArrayList temp = new ArrayList();
         Statement stmt = ConnectionData.conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM FoodItem JOIN Discount ON FoodCategory");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM FoodItem f JOIN Discount d ON d.FoodCategory = f.FoodCategory");
         while (rs.next()){
             temp.add(new FoodItem(rs.getInt("FoodId"), rs.getString("Name"), rs.getInt("Price"), rs.getString("FoodCategory"),
-                    rs.getInt("VAT"), rs.getInt("DiscountId"), rs.getString("DiscountCode"), rs.getInt("Value")));
+                    rs.getInt("VAT"), rs.getInt("DiscountId"), rs.getString("DiscountCode"), rs.getInt("DiscountValue")));
         }
         rs.close();
         stmt.close();

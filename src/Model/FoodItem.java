@@ -3,7 +3,7 @@ package Model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class FoodItem {
+public class FoodItem extends Discount{
     private SimpleIntegerProperty foodId;
     private SimpleStringProperty name;
     private SimpleIntegerProperty price;
@@ -14,14 +14,12 @@ public class FoodItem {
     private SimpleIntegerProperty value;
 
     public FoodItem(int foodId, String name, int price, String foodCategory, int vat, int discountId, String discountCode, int value) {
+        super(discountId, discountCode, foodCategory, value);
         this.foodId = new SimpleIntegerProperty(foodId);
         this.name = new SimpleStringProperty(name);
         this.price = new SimpleIntegerProperty(price);
         this.foodCategory = new SimpleStringProperty(foodCategory);
         this.vat = new SimpleIntegerProperty(vat);
-        this.discountId = new SimpleIntegerProperty(discountId);
-        this.discountCode = new SimpleStringProperty(discountCode);
-        this.value = new SimpleIntegerProperty(value);
     }
 
     public int getFoodId() {
@@ -44,17 +42,6 @@ public class FoodItem {
         return vat.get();
     }
 
-    public int getDiscountId() {
-        return discountId.get();
-    }
-
-    public String getDiscountCode() {
-        return discountCode.get();
-    }
-
-    public int getValue() {
-        return value.get();
-    }
 
     public SimpleIntegerProperty foodIdProperty() {
         return foodId;
@@ -74,18 +61,6 @@ public class FoodItem {
 
     public SimpleIntegerProperty vatProperty() {
         return vat;
-    }
-
-    public SimpleIntegerProperty valueProperty() {
-        return value;
-    }
-
-    public SimpleIntegerProperty discountIdProperty() {
-        return discountId;
-    }
-
-    public SimpleStringProperty discountCodeProperty() {
-        return discountCode;
     }
 
     public void setFoodId(int foodId) {
@@ -108,15 +83,5 @@ public class FoodItem {
         this.vat.set(vat);
     }
 
-    public void setDiscountId(int discountId) {
-        this.discountId.set(discountId);
-    }
 
-    public void setDiscountCode(String discountCode) {
-        this.discountCode.set(discountCode);
-    }
-
-    public void setValue(int value) {
-        this.value.set(value);
-    }
 }
