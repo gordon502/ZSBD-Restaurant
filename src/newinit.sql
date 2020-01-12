@@ -74,6 +74,7 @@ CREATE TABLE Orders (
 	UserId INT NOT NULL,
 	DateOfOrder DATE NOT NULL,
 	Amount INT NOT NULL,
+	Finalized NUMBER(1) DEFAULT 0,
 	constraint ORDERS_PK PRIMARY KEY (OrderId));
 
 CREATE TABLE FoodCategory (
@@ -95,6 +96,7 @@ CREATE TABLE FoodItem (
 	Price FLOAT NOT NULL,
 	FoodCategory NVARCHAR2(40) NOT NULL,
 	VAT FLOAT NOT NULL,
+	Active NUMBER(1) DEFAULT 1,
 	constraint FOODITEM_PK PRIMARY KEY (FoodId));
 
 /
