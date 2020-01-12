@@ -160,24 +160,14 @@ public class StockRoomPanelController {
 
     @FXML
     void showMainMenu(ActionEvent event) throws IOException {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainMenuScene.fxml"));
-        Parent mainMenu = (Parent) loader.load();
-
-        Scene oldScene = stage.getScene();
-        stage.setScene(new Scene(mainMenu, oldScene.getWidth(), oldScene.getHeight()));
+        SceneSwitcher ss = new SceneSwitcher();
+        ss.switchScene(backButton, "../View/MainMenuScene.fxml");
     }
 
     @FXML
     void showSuppliers(ActionEvent event) throws IOException {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/SuppliersPanelScene.fxml"));
-        Parent mainMenu = (Parent) loader.load();
-
-        Scene oldScene = stage.getScene();
-        stage.setScene(new Scene(mainMenu, oldScene.getWidth(), oldScene.getHeight()));
+        SceneSwitcher ss = new SceneSwitcher();
+        ss.switchScene(backButton, "../View/SuppliersPanelScene.fxml");
     }
 
     @FXML

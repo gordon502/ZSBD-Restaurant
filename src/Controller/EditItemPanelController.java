@@ -9,6 +9,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
+import java.io.IOException;
+
 public class EditItemPanelController {
 
     @FXML
@@ -71,8 +73,9 @@ public class EditItemPanelController {
     }
 
     @FXML
-    void showMainMenu(ActionEvent event) {
-
+    void showMainMenu(ActionEvent event) throws IOException {
+        SceneSwitcher ss = new SceneSwitcher();
+        ss.switchScene(backButton, "../View/MainMenuScene.fxml");
     }
 
 }

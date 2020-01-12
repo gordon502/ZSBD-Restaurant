@@ -33,26 +33,15 @@ public class MainMenuController {
 
     @FXML
     public void showSchedulePanel() throws IOException {
-        Stage stage = (Stage) logOutButton.getScene().getWindow();
-
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/SchedulePanelScene.fxml"));
-        Parent schedulePanel = (Parent) loader.load();
-
-        Scene oldScene = stage.getScene();
-        stage.setScene(new Scene(schedulePanel, oldScene.getWidth(), oldScene.getHeight()));
+        SceneSwitcher ss = new SceneSwitcher();
+        ss.switchScene(logOutButton, "../View/SchedulePanelScene.fxml");
     }
 
     @FXML
     public void showStockRoomPanel() throws IOException {
         if (UserData.function.equals("manager")) {
-            Stage stage = (Stage) logOutButton.getScene().getWindow();
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/StockRoomPanelScene.fxml"));
-            Parent stockRoomPanel = (Parent) loader.load();
-
-            Scene oldScene = stage.getScene();
-            stage.setScene(new Scene(stockRoomPanel, oldScene.getWidth(), oldScene.getHeight()));
+            SceneSwitcher ss = new SceneSwitcher();
+            ss.switchScene(logOutButton, "../View/StockRoomPanelScene.fxml");
         }
         else {
             showAccessDeniedAlert();
@@ -76,8 +65,20 @@ public class MainMenuController {
     }
 
     @FXML
-    public void showEditItemPanel() {
-        
+    public void showEditItemPanel() throws IOException{
+        if (UserData.function.equals("manager")) {
+            Stage stage = (Stage) logOutButton.getScene().getWindow();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/EditItemPanelScene.fxml"));
+            Parent editItemPanel = (Parent) loader.load();
+
+            Scene oldScene = stage.getScene();
+            stage.setScene(new Scene(editItemPanel, oldScene.getWidth(), oldScene.getHeight()));
+        }
+        else {
+            showAccessDeniedAlert();
+        }
+
     }
 
     @FXML

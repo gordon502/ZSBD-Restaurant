@@ -19,7 +19,6 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.util.regex.Pattern;
 
-import static Controller.Alerts.showErrorAlert;
 
 public class SuppliersPanelController {
 
@@ -124,13 +123,8 @@ public class SuppliersPanelController {
 
     @FXML
     void showStockRoomPanel(ActionEvent event) throws IOException {
-        Stage stage = (Stage) addButton.getScene().getWindow();
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/StockRoomPanelScene.fxml"));
-        Parent stockRoom = (Parent) loader.load();
-
-        Scene oldScene = stage.getScene();
-        stage.setScene(new Scene(stockRoom, oldScene.getWidth(), oldScene.getHeight()));
+        SceneSwitcher ss = new SceneSwitcher();
+        ss.switchScene(backButton, "../View/StockRoomPanelScene.fxml");
     }
 
     @FXML

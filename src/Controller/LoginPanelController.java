@@ -51,13 +51,8 @@ public class LoginPanelController {
         }*/
 
         if (verifyUser()) {
-            Stage stage = (Stage) loginButton.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainMenuScene.fxml"));
-            Parent parent = (Parent) loader.load();
-            MainMenuController controller = loader.<MainMenuController>getController();
-
-            Scene oldScene = stage.getScene();
-            stage.setScene(new Scene(parent, oldScene.getWidth(), oldScene.getHeight()));
+            SceneSwitcher ss = new SceneSwitcher();
+            ss.switchScene(loginButton, "../View/MainMenuScene.fxml");
         }
         else {
             passwordTextField.clear();
