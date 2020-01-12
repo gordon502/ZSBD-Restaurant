@@ -13,8 +13,8 @@ public class FoodItem extends Discount{
     private SimpleStringProperty discountCode;
     private SimpleIntegerProperty value;
 
-    public FoodItem(int foodId, String name, int price, String foodCategory, int vat, int discountId, String discountCode, int value) {
-        super(discountId, discountCode, foodCategory, value);
+    public FoodItem(int foodId, String name, int price, int foodCategoryId, String foodCategory, int vat, int discountId, String discountCode, int value) {
+        super(discountId, discountCode, foodCategoryId, foodCategory, value);
         this.foodId = new SimpleIntegerProperty(foodId);
         this.name = new SimpleStringProperty(name);
         this.price = new SimpleIntegerProperty(price);

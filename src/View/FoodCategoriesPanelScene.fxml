@@ -62,6 +62,7 @@
         <TableView fx:id="discountTable" prefHeight="600.0" prefWidth="0.0" BorderPane.alignment="CENTER">
             <columns>
                 <TableColumn minWidth="0.0" prefWidth="100.0" text="DiscountId" />
+            <TableColumn prefWidth="100.0" text="FoodCategoryId" />
                 <TableColumn prefWidth="100.0" text="Food Category" />
                 <TableColumn prefWidth="100.0" text="Discount Code" />
                 <TableColumn prefWidth="100.0" text="Value" />

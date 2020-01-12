@@ -16,7 +16,7 @@ public class FoodItemList {
         Statement stmt = ConnectionData.conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM FoodItem f JOIN Discount d ON d.FoodCategory = f.FoodCategory");
         while (rs.next()){
-            temp.add(new FoodItem(rs.getInt("FoodId"), rs.getString("Name"), rs.getInt("Price"), rs.getString("FoodCategory"),
+            temp.add(new FoodItem(rs.getInt("FoodId"), rs.getString("Name"), rs.getInt("Price"), rs.getInt("FoodCategoryId"), rs.getString("FoodCategory"),
                     rs.getInt("VAT"), rs.getInt("DiscountId"), rs.getString("DiscountCode"), rs.getInt("DiscountValue")));
         }
         rs.close();
