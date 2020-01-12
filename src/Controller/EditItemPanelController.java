@@ -68,8 +68,9 @@ public class EditItemPanelController {
     }
 
     @FXML
-    void showFoodCategoriesPanel(ActionEvent event) {
-
+    void showFoodCategoriesPanel(ActionEvent event) throws IOException{
+        SceneSwitcher ss = new SceneSwitcher();
+        ss.switchScene(backButton, "../View/FoodCategoriesPanelScene.fxml");
     }
 
     @FXML
