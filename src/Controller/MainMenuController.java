@@ -76,6 +76,11 @@ public class MainMenuController {
     }
 
     @FXML
+    public void showEditItemPanel() {
+        
+    }
+
+    @FXML
     public void showRaportsPanel() throws IOException{
         if (UserData.function.equals("manager")) {
             Stage stage = (Stage) logOutButton.getScene().getWindow();

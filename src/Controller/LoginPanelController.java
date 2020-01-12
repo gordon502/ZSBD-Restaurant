@@ -60,7 +60,7 @@ public class LoginPanelController {
             stage.setScene(new Scene(parent, oldScene.getWidth(), oldScene.getHeight()));
         }
         else {
-            passwordTextField.setText(null);
+            passwordTextField.clear();
             Alerts.showErrorAlert("Wrong login or password!");
         }
 
