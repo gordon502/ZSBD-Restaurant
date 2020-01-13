@@ -188,34 +188,9 @@ public class StockRoomPanelController {
         
 
         //force quantityTextField and demandTextField to get only numeric values
-        quantityTextField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    quantityTextField.setText(newValue.replaceAll("[^\\d]", ""));
-                }
-            }
-        });
-        demandTextField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    demandTextField.setText(newValue.replaceAll("[^\\d]", ""));
-                }
-            }
-        });
-        priceTextField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    priceTextField.setText(newValue.replaceAll("[^\\d]", ""));
-                }
-            }
-        });
-
+        Utils.forceDecimals(quantityTextField);
+        Utils.forceDecimals(demandTextField);
+        Utils.forceDecimals(priceTextField);
 
         stockItemTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {

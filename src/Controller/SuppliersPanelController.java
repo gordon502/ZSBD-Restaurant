@@ -138,6 +138,8 @@ public class SuppliersPanelController {
 
         supplierTable.setItems(SupplierList.suppliers);
 
+        Utils.forceDecimals(phoneTextField);
+
         supplierTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 fillSupplierData(newValue);
