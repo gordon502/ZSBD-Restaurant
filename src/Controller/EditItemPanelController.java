@@ -3,24 +3,28 @@ package Controller;
 import Model.ConnectionData;
 import Model.FoodItem;
 import Model.FoodItemList;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
-
-import javax.xml.soap.Text;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EditItemPanelController {
+
+    private Integer chosenFoodItemId;
+
+    private Map<String, Integer> foodCategoriesIdMap;
+
+    private Integer activeTab;
 
     @FXML
     private TabPane tabPane;
@@ -75,21 +79,15 @@ public class EditItemPanelController {
             String name = nameTextField.getText();
             int price = Integer.valueOf(priceTextField.getText());
             String foodCategory = foodCategoryComboBox.getValue();
+            int foodCategoryId = foodCategoriesIdMap.get(foodCategory);
             int vat = Integer.valueOf(vatTextField.getText());
             int active = Math.abs(tabPane.getSelectionModel().getSelectedIndex() - 1); //because activeitems table has index 0 and number 1 in database means that item is active
 
-            PreparedStatement stmt = ConnectionData.conn.prepareStatement("SELECT FoodCategoryId From FoodCategory WHERE name = ?");
-            stmt.setString(1, foodCategoryComboBox.getValue());
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
-            int foodCategoryId = rs.getInt("FoodCategoryId");
-            rs.close();
-
-            stmt = ConnectionData.conn.prepareStatement("INSERT INTO FoodItem " +
-                    "VALUES (NULL, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement stmt = ConnectionData.conn.prepareStatement("INSERT INTO FoodItem " +
+                    "VALUES (NULL, ?, ?, ?, ?, ?)");
             stmt.setString(1, name); stmt.setInt(2, price);
-            stmt.setInt(3, foodCategoryId); stmt.setString(4, foodCategory);
-            stmt.setInt(5, vat); stmt.setInt(6, active);
+            stmt.setInt(3, foodCategoryId);
+            stmt.setInt(4, vat); stmt.setInt(5, active);
             stmt.executeUpdate();
             stmt.close();
 
@@ -133,6 +131,13 @@ public class EditItemPanelController {
             t.getColumns().get(2).setCellValueFactory(new PropertyValueFactory("Price"));
             t.getColumns().get(3).setCellValueFactory(new PropertyValueFactory("foodCategory"));
             t.getColumns().get(4).setCellValueFactory(new PropertyValueFactory("vat"));
+            t.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    fillProductData(newValue);
+                    modifyButton.setDisable(false);
+                    activeButton.setDisable(false);
+                }
+            });
         }
 
         FoodItemList.readFoodItems();
@@ -144,6 +149,16 @@ public class EditItemPanelController {
 
         Utils.forceDecimals(vatTextField);
         Utils.forceDecimals(priceTextField);
+
+        Statement stmt = ConnectionData.conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT Name, FoodCategoryId From FoodCategory");
+        foodCategoriesIdMap = new HashMap<>();
+        while (rs.next()) {
+            foodCategoriesIdMap.put(rs.getString("Name"), rs.getInt("FoodCategoryId"));
+        }
+        rs.close();
+        stmt.close();
+
     }
 
     private boolean checkData() {
@@ -171,6 +186,15 @@ public class EditItemPanelController {
         }
 
         return dataFlag;
+    }
+
+    private void fillProductData(FoodItem foodItem) {
+        chosenFoodItemId = foodItem.getFoodId();
+        nameTextField.setText(foodItem.getName());
+        priceTextField.setText(Integer.toString(foodItem.getPrice()));
+        foodCategoryComboBox.setValue(foodItem.getFoodCategory());
+        vatTextField.setText(Integer.toString(foodItem.getVat()));
+        activeTab = Math.abs(tabPane.getSelectionModel().getSelectedIndex() - 1);
     }
 
     private void clear() {
