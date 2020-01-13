@@ -1,7 +1,9 @@
 package Controller;
 
+import Model.ConnectionData;
 import Model.Order;
 import Model.OrderList;
+import Model.UserData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,9 +12,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import oracle.jdbc.proxy.annotation.Pre;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class ActiveBillsPanelController {
+
+    private Integer chosenOrderId;
+
+    private String chosenOrderLogin;
 
     @FXML
     private TableView<Order> activeOrdersTable;
@@ -35,8 +42,15 @@ public class ActiveBillsPanelController {
     }
 
     @FXML
-    void finalizeOrder(ActionEvent event) {
+    void finalizeOrder(ActionEvent event) throws SQLException {
+        if (checkAccessibility()) {
+            PreparedStatement stmt = ConnectionData.conn.prepareStatement("UPDATE Orders SET " +
+                    "finalized = 1 WHERE OrderId = ?");
+            stmt.setInt(1, chosenOrderId);
+            stmt.executeUpdate();
 
+            refresh();
+        }
     }
 
     @FXML
@@ -64,6 +78,40 @@ public class ActiveBillsPanelController {
         showButton.setDisable(true);
         finalizeButton.setDisable(true);
         deleteButton.setDisable(true);
+
+        activeOrdersTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                showButton.setDisable(false);
+                finalizeButton.setDisable(false);
+                deleteButton.setDisable(false);
+                chosenOrderId = newValue.getOrderId();
+                chosenOrderLogin = newValue.getLogin();
+            }
+        });
     }
+
+    //check if user have permission to do anything with bill
+    private boolean checkAccessibility() {
+        if (UserData.function.equals("manager") || UserData.login.equals(chosenOrderLogin)) {
+            return true;
+        }
+        else {
+            Alerts.showErrorAlert("You don't own this bill!");
+            return false;
+        }
+
+    }
+
+    private void refresh() throws SQLException{
+        OrderList.readOrders();
+        showButton.setDisable(true);
+        finalizeButton.setDisable(true);
+        deleteButton.setDisable(true);
+        chosenOrderId = null;
+        chosenOrderLogin = null;
+
+        activeOrdersTable.setItems(OrderList.orders);
+    }
+
 
 }
