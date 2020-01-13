@@ -69,8 +69,14 @@ public class EditItemPanelController {
     private Button backButton;
 
     @FXML
-    void activeButton(ActionEvent event) {
-
+    void activeButton(ActionEvent event) throws SQLException{
+        PreparedStatement stmt = ConnectionData.conn.prepareStatement("UPDATE FoodItem " +
+                "SET ACTIVE = ? WHERE FoodId = ?");
+        stmt.setInt(1, Math.abs(activeTab - 1));
+        stmt.setInt(2, chosenFoodItemId);
+        stmt.executeUpdate();
+        stmt.close();
+        refresh();
     }
 
     @FXML
@@ -91,11 +97,7 @@ public class EditItemPanelController {
             stmt.executeUpdate();
             stmt.close();
 
-            FoodItemList.readFoodItems();
-            activeFoodItemsTable.setItems(FoodItemList.activeFoodItems);
-            unactiveFoodItemsTable.setItems(FoodItemList.unactiveFoodItems);
-            activeFoodItemsTable.refresh();
-            unactiveFoodItemsTable.refresh();
+            refresh();
             clear();
         }
     }
@@ -202,5 +204,13 @@ public class EditItemPanelController {
         priceTextField.clear();
         foodCategoryComboBox.setValue(null);
         vatTextField.clear();
+    }
+
+    private void refresh() throws SQLException{
+        FoodItemList.readFoodItems();
+        activeFoodItemsTable.setItems(FoodItemList.activeFoodItems);
+        unactiveFoodItemsTable.setItems(FoodItemList.unactiveFoodItems);
+        activeFoodItemsTable.refresh();
+        unactiveFoodItemsTable.refresh();
     }
 }
