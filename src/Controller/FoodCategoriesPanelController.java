@@ -62,7 +62,6 @@ public class FoodCategoriesPanelController {
                 System.out.println("Byla juz taka kategoria");
             }
             try {
-                System.out.println("jestem");
                 PreparedStatement stmt = ConnectionData.conn.prepareStatement("SELECT FoodCategoryId FROM FoodCategory WHERE " +
                         "Name = ?");
                 stmt.setString(1, foodCategoryComboBox.getValue());
@@ -82,7 +81,7 @@ public class FoodCategoriesPanelController {
                 DiscountList.readDiscounts();
                 discountTable.setItems(DiscountList.discounts);
                 discountTable.refresh();
-                refreshFoodCategories();
+                refreshFoodCategories(foodCategoryComboBox);
 
                 stmt.close();
             }
@@ -120,7 +119,7 @@ public class FoodCategoriesPanelController {
                 DiscountList.readDiscounts();
                 discountTable.setItems(DiscountList.discounts);
                 discountTable.refresh();
-                refreshFoodCategories();
+                refreshFoodCategories(foodCategoryComboBox);
 
                 stmt.close();
 
@@ -171,7 +170,7 @@ public class FoodCategoriesPanelController {
         valueTextField.clear();
     }
 
-    private void refreshFoodCategories() throws SQLException{
+    public void refreshFoodCategories(ComboBox<String> foodCategoryComboBox) throws SQLException{
         ArrayList<String> temp = new ArrayList();
         Statement stmt = ConnectionData.conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM FoodCategory");
@@ -208,7 +207,7 @@ public class FoodCategoriesPanelController {
 
         discountTable.setItems(DiscountList.discounts);
 
-        refreshFoodCategories();
+        refreshFoodCategories(foodCategoryComboBox);
 
         discountTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
