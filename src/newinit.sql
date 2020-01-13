@@ -157,7 +157,7 @@ BEGIN
  SELECT SUM(HOURS)
  INTO HOURS
  FROM WorkShift
- WHERE UserId = EmpId AND DateOfWS>StartDate AND DateOfWS<EndDate;
+ WHERE UserId = EmpId AND DateOfWS>=StartDate AND DateOfWS=<EndDate;
  RETURN HOURS;
 END EMPLOYEEHOURS;
 /

@@ -21,4 +21,13 @@ public class Alerts {
 
         alert.showAndWait();
     }
+
+    public static void showHoursAlert(String title, String startdate, String enddate, int hours) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText("Godziny w okresie " + startdate + " - " + enddate +": " + hours);
+
+        alert.showAndWait();
+    }
 }
