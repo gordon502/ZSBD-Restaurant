@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.ConnectionData;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,6 +11,10 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 import Model.UserData;
 
@@ -22,13 +27,26 @@ public class MainMenuController {
     private Label loggedUserLabel;
 
     @FXML
-    public void showActiveBillsPanel() {
-
+    public void showActiveBillsPanel() throws IOException{
+        SceneSwitcher ss = new SceneSwitcher();
+        ss.switchScene(logOutButton, "../View/ActiveBillsPanelScene.fxml");
     }
 
     @FXML
     public void showNewBillPanel() {
+        try {
+            PreparedStatement stmt = ConnectionData.conn.prepareStatement("INSERT INTO Orders " +
+                    "VALUES(NULL, ?, ?, ?, 0, 0)");
+            stmt.setInt(1, UserData.id); stmt.setString(2, UserData.login);
+            stmt.setDate(3, Date.valueOf(LocalDate.now()));
+            stmt.executeUpdate();
+            stmt.close();
 
+            Alerts.showInformationAlert("Empty bill has been added!");
+        }
+        catch (SQLException e) {
+            Alerts.showErrorAlert("Error, contact with administrator or try again later!");
+        }
     }
 
     @FXML

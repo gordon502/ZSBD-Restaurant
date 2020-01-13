@@ -11,6 +11,14 @@ public class Alerts {
         alert.setContentText(errorMessage);
 
         alert.showAndWait();
+    }
 
+    public static void showInformationAlert(String confirmMessage) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success!");
+        alert.setHeaderText(null);
+        alert.setContentText(confirmMessage);
+
+        alert.showAndWait();
     }
 }
