@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import oracle.jdbc.proxy.annotation.Pre;
+
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -76,6 +78,7 @@ public class EditItemPanelController {
         stmt.setInt(2, chosenFoodItemId);
         stmt.executeUpdate();
         stmt.close();
+        clear();
         refresh();
     }
 
@@ -103,8 +106,24 @@ public class EditItemPanelController {
     }
 
     @FXML
-    void modifyItem(ActionEvent event) {
+    void modifyItem(ActionEvent event) throws SQLException{
+        if (checkData()) {
+            String name = nameTextField.getText();
+            int price = Integer.valueOf(priceTextField.getText());
+            String foodCategory = foodCategoryComboBox.getValue();
+            int foodCategoryId = foodCategoriesIdMap.get(foodCategory);
+            int vat = Integer.valueOf(vatTextField.getText());
 
+            PreparedStatement stmt = ConnectionData.conn.prepareStatement("UPDATE FoodItem " +
+                    "SET name = ?, foodCategoryId = ?, price = ?,  Vat = ? WHERE FoodId = ?");
+            stmt.setString(1, name); stmt.setInt(3, price);
+            stmt.setInt(2, foodCategoryId); stmt.setInt(4, vat);
+            stmt.setInt(5, chosenFoodItemId);
+            stmt.executeUpdate();
+            stmt.close();
+
+            refresh();
+        }
     }
 
     @FXML
@@ -160,7 +179,6 @@ public class EditItemPanelController {
         }
         rs.close();
         stmt.close();
-
     }
 
     private boolean checkData() {
@@ -204,6 +222,8 @@ public class EditItemPanelController {
         priceTextField.clear();
         foodCategoryComboBox.setValue(null);
         vatTextField.clear();
+        modifyButton.setDisable(true);
+        activeButton.setDisable(true);
     }
 
     private void refresh() throws SQLException{
