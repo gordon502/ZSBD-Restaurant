@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class RaportsPanelController {
@@ -29,11 +31,8 @@ public class RaportsPanelController {
     private DatePicker endDatePicker;
 
     @FXML
-    public void generateRaport() {
-        /*
-        query raport from database from chosen period of time
-        and show it on screen (i would recommend use Alert class)
-        */
+    public void generateRaport() throws SQLException {
+        Alerts.showRaportAlert(Date.valueOf(startDatePicker.getValue()), Date.valueOf(endDatePicker.getValue()));
     }
 
     @FXML
