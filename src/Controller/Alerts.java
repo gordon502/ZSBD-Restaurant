@@ -3,7 +3,6 @@ package Controller;
 import Model.ConnectionData;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import sun.text.resources.no.CollationData_no;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;

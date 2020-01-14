@@ -132,6 +132,14 @@ public class UsersPanelController {
         }
     }
 
+    public boolean containsLogin(final ObservableList<User> list, final String login) {
+        return list.stream().filter(o -> o.getLogin().equals(login)).findFirst().isPresent();
+    }
+
+    public boolean containsPhone(final ObservableList<User> list, final int phone) {
+        return list.stream().filter(o -> o.getPhone() == phone).findFirst().isPresent();
+    }
+
     @FXML
     void registerNewUser(ActionEvent event) throws SQLException {
         int phone = 0;
@@ -148,6 +156,23 @@ public class UsersPanelController {
             phone = Integer.valueOf(phoneTextField.getText());
         } catch (NumberFormatException e) {
         }
+
+        boolean error = false;
+        String errorMessage = "";
+
+        if (containsLogin(UserList.users, login)) {
+            errorMessage += "There is already a user with this login!";
+            error = true;
+        }
+        if (containsPhone(UserList.users, phone)) {
+            errorMessage += "\nThere is already a user with this phone number!";
+            error = true;
+        }
+        if (error) {
+            Alerts.showErrorAlert(errorMessage);
+            return;
+        }
+
 
         CallableStatement stmt = ConnectionData.conn.prepareCall("{call ADD_USER(?,?,?,?,?,?,?,?, ?)}");
         stmt.setString(1, login);
