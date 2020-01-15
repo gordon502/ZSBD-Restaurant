@@ -277,8 +277,8 @@ public class UsersPanelController {
         rateTextField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("[\\d\\.]*")) {
-                    rateTextField.setText(newValue.replaceAll("[^[\\d\\.]]", ""));
+                if (newValue.matches("\\d+(\\.(\\d{1,2})?)?$")) {
+                    rateTextField.setText(oldValue);
                 }
             }
         });
