@@ -4,6 +4,8 @@ import Model.ConnectionData;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,11 +32,14 @@ public class Alerts {
         alert.showAndWait();
     }
 
-    public static void showHoursAlert(String title, String startdate, String enddate, int hours) {
+    public static void showHoursAlert(String title, String startdate, String enddate, int hours, float pay) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText("Godziny w okresie " + startdate + " - " + enddate + ": " + hours);
+        BigDecimal bd = new BigDecimal(pay).setScale(2, RoundingMode.HALF_UP);
+        alert.setContentText("Godziny w okresie " + startdate + " - " + enddate + ": " + hours+"\nDo zapłaty: "+ bd);
+
+        alert.showAndWait();
     }
 
     public static boolean showConfirmationAlert(String warningMessage) {

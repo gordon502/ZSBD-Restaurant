@@ -133,7 +133,8 @@ public class WorkshiftPanelController {
             int userhours = stmt.getInt(1);
             stmt.close();
 
-            Alerts.showHoursAlert(userCombo.getSelectionModel().getSelectedItem(), startDate.getValue().toString(), endDate.getValue().toString(), userhours);
+            Alerts.showHoursAlert(userCombo.getSelectionModel().getSelectedItem(), startDate.getValue().toString(), endDate.getValue().toString(), userhours,
+                    userhours*UserList.usersMap.get(Integer.valueOf(userCombo.getSelectionModel().getSelectedItem().split(" ")[0])).getHourRate());
         }
     }
 

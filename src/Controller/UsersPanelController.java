@@ -142,60 +142,65 @@ public class UsersPanelController {
 
     @FXML
     void registerNewUser(ActionEvent event) throws SQLException {
-        int phone = 0;
-        String login = loginTextField.getText();
-        String password = passwordField.getText();
-        String firstName = firstNameTextField.getText();
-        String lastName = lastNameTextField.getText();
-        String function = functionComboBox.getValue();
-        String position = postitionCombo.getValue();
+        try{
+            int phone = 0;
+            String login = loginTextField.getText();
+            String password = passwordField.getText();
+            String firstName = firstNameTextField.getText();
+            String lastName = lastNameTextField.getText();
+            String function = functionComboBox.getValue();
+            String position = postitionCombo.getValue();
 
-        Float hourRate = Float.valueOf(rateTextField.getText());
+            Float hourRate = Float.valueOf(rateTextField.getText());
 
-        try {
-            phone = Integer.valueOf(phoneTextField.getText());
-        } catch (NumberFormatException e) {
+            try {
+                phone = Integer.valueOf(phoneTextField.getText());
+            } catch (NumberFormatException e) {
+            }
+
+            boolean error = false;
+            String errorMessage = "";
+
+            if (containsLogin(UserList.users, login)) {
+                errorMessage += "There is already a user with this login!";
+                error = true;
+            }
+            if (containsPhone(UserList.users, phone)) {
+                errorMessage += "\nThere is already a user with this phone number!";
+                error = true;
+            }
+            if (error) {
+                Alerts.showErrorAlert(errorMessage);
+                return;
+            }
+
+
+            CallableStatement stmt = ConnectionData.conn.prepareCall("{call ADD_USER(?,?,?,?,?,?,?,?, ?)}");
+            stmt.setString(1, login);
+            stmt.setString(2, password);
+            stmt.setString(3, function);
+            stmt.setString(4, firstName);
+            stmt.setString(5, lastName);
+            stmt.setString(6, position);
+            stmt.setFloat(7, hourRate);
+            if (phone != 0) {
+                stmt.setInt(8, phone);
+            } else {
+                stmt.setNull(8, Types.INTEGER);
+            }
+            stmt.registerOutParameter(9, Types.INTEGER);
+
+            stmt.execute();
+            int userid = stmt.getInt(9);
+            User newUser = new User(userid, login, password, function, firstName, lastName, position, hourRate, phone, 0);
+            UserList.users.add(newUser);
+            UserList.usersMap.put(newUser.getUserId(), newUser);
+
+            stmt.close();
         }
-
-        boolean error = false;
-        String errorMessage = "";
-
-        if (containsLogin(UserList.users, login)) {
-            errorMessage += "There is already a user with this login!";
-            error = true;
+        catch(Exception e){
+            Alerts.showErrorAlert("Problem!");
         }
-        if (containsPhone(UserList.users, phone)) {
-            errorMessage += "\nThere is already a user with this phone number!";
-            error = true;
-        }
-        if (error) {
-            Alerts.showErrorAlert(errorMessage);
-            return;
-        }
-
-
-        CallableStatement stmt = ConnectionData.conn.prepareCall("{call ADD_USER(?,?,?,?,?,?,?,?, ?)}");
-        stmt.setString(1, login);
-        stmt.setString(2, password);
-        stmt.setString(3, function);
-        stmt.setString(4, firstName);
-        stmt.setString(5, lastName);
-        stmt.setString(6, position);
-        stmt.setFloat(7, hourRate);
-        if (phone != 0) {
-            stmt.setInt(8, phone);
-        } else {
-            stmt.setNull(8, Types.INTEGER);
-        }
-        stmt.registerOutParameter(9, Types.INTEGER);
-
-        stmt.execute();
-        int userid = stmt.getInt(9);
-        User newUser = new User(userid, login, password, function, firstName, lastName, position, hourRate, phone, 0);
-        UserList.users.add(newUser);
-        UserList.usersMap.put(newUser.getUserId(), newUser);
-
-        stmt.close();
     }
 
     @FXML
@@ -277,7 +282,7 @@ public class UsersPanelController {
         rateTextField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue.matches("\\d+(\\.(\\d{1,2})?)?$")) {
+                if (!newValue.matches("(\\d+(\\.(\\d{1,2})?)?$)?")) {
                     rateTextField.setText(oldValue);
                 }
             }

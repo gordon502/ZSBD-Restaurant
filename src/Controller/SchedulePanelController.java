@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.ConnectionData;
-import Model.ScheduleItem;
-import Model.User;
-import Model.UserList;
+import Model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -70,29 +67,34 @@ public class SchedulePanelController {
     @FXML
     void addmod(ActionEvent event) throws SQLException {
 
-        if (!Arrays.asList(userCombo.getSelectionModel().getSelectedIndex(), dayCombo.getSelectionModel().getSelectedIndex(), startCombo.getSelectionModel().getSelectedIndex(), endCombo.getSelectionModel().getSelectedIndex()).contains(-1)) {
-            String user = userCombo.getSelectionModel().getSelectedItem();
-            int day = dayCombo.getSelectionModel().getSelectedIndex();
-            String start = startCombo.getSelectionModel().getSelectedItem();
-            String end = endCombo.getSelectionModel().getSelectedItem();
+        if (UserData.function.equals("manager")) {
+            if (!Arrays.asList(userCombo.getSelectionModel().getSelectedIndex(), dayCombo.getSelectionModel().getSelectedIndex(), startCombo.getSelectionModel().getSelectedIndex(), endCombo.getSelectionModel().getSelectedIndex()).contains(-1)) {
+                String user = userCombo.getSelectionModel().getSelectedItem();
+                int day = dayCombo.getSelectionModel().getSelectedIndex();
+                String start = startCombo.getSelectionModel().getSelectedItem();
+                String end = endCombo.getSelectionModel().getSelectedItem();
 
-            ScheduleItem scheduleItem = scheduleItems.get(userCombo.getSelectionModel().getSelectedIndex());
-            scheduleItem.set(dayCombo.getSelectionModel().getSelectedIndex(), start + " - " + end);
+                ScheduleItem scheduleItem = scheduleItems.get(userCombo.getSelectionModel().getSelectedIndex());
+                scheduleItem.set(dayCombo.getSelectionModel().getSelectedIndex(), start + " - " + end);
 
-            CallableStatement stmt = ConnectionData.conn.prepareCall("{call ADD_SCHEDULE(?,?,?,?,?,?, ?)}");
+                CallableStatement stmt = ConnectionData.conn.prepareCall("{call ADD_SCHEDULE(?,?,?,?,?,?, ?)}");
 
-            stmt.setString(1, user.split(" ")[0]);
-            stmt.setDate(2, java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(now.getTime())));
-            now.add(Calendar.DAY_OF_YEAR, day);
-            stmt.setDate(3, java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(now.getTime())));
-            now.add(Calendar.DAY_OF_YEAR, -day);
-            stmt.setInt(4, day);
-            stmt.setString(5, start);
-            stmt.setString(6, end);
-            stmt.setInt(7, Integer.valueOf(end.split(":")[0])-Integer.valueOf(start.split(":")[0]));
+                stmt.setString(1, user.split(" ")[0]);
+                stmt.setDate(2, java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(now.getTime())));
+                now.add(Calendar.DAY_OF_YEAR, day);
+                stmt.setDate(3, java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(now.getTime())));
+                now.add(Calendar.DAY_OF_YEAR, -day);
+                stmt.setInt(4, day);
+                stmt.setString(5, start);
+                stmt.setString(6, end);
+                stmt.setInt(7, Integer.valueOf(end.split(":")[0])-Integer.valueOf(start.split(":")[0]));
 
-            stmt.execute();
-            stmt.close();
+                stmt.execute();
+                stmt.close();
+            }
+        }
+        else {
+            Alerts.showErrorAlert("You don't have permission for this operation!");
         }
     }
 
@@ -105,17 +107,22 @@ public class SchedulePanelController {
 
     @FXML
     void removeSchedule(ActionEvent event) throws SQLException {
-        if (!Arrays.asList(userCombo.getSelectionModel().getSelectedIndex(), dayCombo.getSelectionModel()).contains(-1)) {
-            now.add(Calendar.DAY_OF_YEAR, dayCombo.getSelectionModel().getSelectedIndex());
-            PreparedStatement stmt = ConnectionData.conn.prepareStatement("delete from schedule where UserId=? and DayDate=?");
-            stmt.setInt(1, Integer.valueOf(userCombo.getSelectionModel().getSelectedItem().split(" ")[0]));
-            stmt.setDate(2, java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(now.getTime())));
-            now.add(Calendar.DAY_OF_YEAR, -dayCombo.getSelectionModel().getSelectedIndex());
-            stmt.executeUpdate();
-            stmt.close();
+        if (UserData.function.equals("manager")) {
+            if (!Arrays.asList(userCombo.getSelectionModel().getSelectedIndex(), dayCombo.getSelectionModel()).contains(-1)) {
+                now.add(Calendar.DAY_OF_YEAR, dayCombo.getSelectionModel().getSelectedIndex());
+                PreparedStatement stmt = ConnectionData.conn.prepareStatement("delete from schedule where UserId=? and DayDate=?");
+                stmt.setInt(1, Integer.valueOf(userCombo.getSelectionModel().getSelectedItem().split(" ")[0]));
+                stmt.setDate(2, java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(now.getTime())));
+                now.add(Calendar.DAY_OF_YEAR, -dayCombo.getSelectionModel().getSelectedIndex());
+                stmt.executeUpdate();
+                stmt.close();
 
-            ScheduleItem scheduleItem = scheduleItems.get(userCombo.getSelectionModel().getSelectedIndex());
-            scheduleItem.set(dayCombo.getSelectionModel().getSelectedIndex(), null);
+                ScheduleItem scheduleItem = scheduleItems.get(userCombo.getSelectionModel().getSelectedIndex());
+                scheduleItem.set(dayCombo.getSelectionModel().getSelectedIndex(), null);
+            }
+        }
+        else {
+            Alerts.showErrorAlert("YOu don't have permission for this operation!");
         }
 
     }
